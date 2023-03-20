@@ -1,0 +1,74 @@
+buildscript {
+    repositories {
+        maven { url = "https://files.minecraftforge.net/maven" }
+    }
+    dependencies {
+        classpath "net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT"
+    }
+}
+
+apply plugin: 'net.minecraftforge.gradle.forge'
+
+repositories {
+    maven {
+        url "https://cursemaven.com"
+    }
+}
+
+// Read config file
+file "build.properties" withReader {
+    def properties = new Properties()
+    properties.load(it)
+    ext.config = new ConfigSlurper().parse(properties)
+}
+
+version = "${config.mod.version}"
+group = "mod.traister101.${config.mod.id}"
+archivesBaseName = "${config.mod.name}"
+
+sourceCompatibility = targetCompatibility = 1.8
+
+minecraft {
+    version = "${config.minecraft.version}-${config.forge.version}"
+    runDir = "run"
+    mappings = "stable_39"
+
+    replace("@MODID@", config.mod.id)
+    replace("@MODNAME@", config.mod.name)
+    replace("@VERSION@", project.version)
+    replaceIn("${config.mod.class}.java")
+}
+
+dependencies {
+    deobfCompile("curse.maven:TerraFirmaCraft-${config.tfc.id}:${config.tfc.file}")
+}
+
+processResources {
+    // this will ensure that this task is redone when the versions change.
+    inputs.property("moid", config.mod.id)
+    inputs.property("modname", config.mod.name)
+    inputs.property("version", project.version)
+    inputs.property("mcversion", project.minecraft.version)
+
+    // replace stuff in mcmod.info and pack.mcmeta
+    from(sourceSets.main.resources.srcDirs) {
+        include("mcmod.info", "pack.mcmeta")
+
+        // replace version, mcversion and modname
+        expand("modid": config.mod.id, "version": project.version, "modname": config.mod.name, "mcversion": project.minecraft.version)
+    }
+
+    // copy everything else
+    from(sourceSets.main.resources.srcDirs) {
+        exclude("mcmod.info", "pack.mcmeta")
+    }
+
+    // Copy lisence from project root
+    from(".") {
+        include("LICENSE")
+    }
+}
+
+project.tasks.withType(Jar) { jarTask ->
+    jarTask.appendix = project.minecraft.version
+}

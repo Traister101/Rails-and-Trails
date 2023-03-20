@@ -1,0 +1,19 @@
+[
+  {
+    "modid": "${modid}",
+    "name": "${modname}",
+    "description": "A TFC addon which improves on transportation",
+    "version": "${version}",
+    "mcversion": "${mcversion}",
+    "updateUrl": "",
+    "authorList": [
+      "Traister101"
+    ],
+    "credits": "",
+    "logoFile": "/assets/tfc/textures/gui/logo.png",
+    "screenshots": [],
+    "dependencies": [
+      "tfc"
+    ]
+  }
+]
