@@ -1,6 +1,6 @@
 package mod.traister101.rnt.client;
 
-import net.dries007.tfc.objects.blocks.BlocksTFC;
+import mod.traister101.rnt.objects.blocks.BlocksRNT;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.ItemBlock;
 import net.minecraftforge.client.event.ModelRegistryEvent;
@@ -20,10 +20,7 @@ public final class ClientRegistry {
     public static void registerModels(final ModelRegistryEvent event) {
 
         // Item Blocks
-        for (final ItemBlock item : BlocksTFC.getAllNormalItemBlocks())
+        for (final ItemBlock item : BlocksRNT.getAllNormalItemBlocks())
             ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName(), "normal"));
-
-        for (final ItemBlock item : BlocksTFC.getAllInventoryItemBlocks())
-            ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName(), "inventory"));
     }
 }

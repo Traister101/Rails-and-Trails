@@ -2,6 +2,7 @@ package mod.traister101.rnt.objects.blocks;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableList.Builder;
+import net.dries007.tfc.api.registries.TFCRegistries;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemBlock;
@@ -19,14 +20,9 @@ import static net.dries007.tfc.objects.CreativeTabsTFC.CT_ROCK_BLOCKS;
 public final class BlocksRNT {
 
     private static ImmutableList<ItemBlock> allNormalItemBlocks;
-    private static ImmutableList<ItemBlock> allInventoryItemBlocks;
 
     public static ImmutableList<ItemBlock> getAllNormalItemBlocks() {
         return allNormalItemBlocks;
-    }
-
-    public static ImmutableList<ItemBlock> getAllInventoryItemBlocks() {
-        return allInventoryItemBlocks;
     }
 
     @SubscribeEvent
@@ -36,9 +32,12 @@ public final class BlocksRNT {
 
         Builder<ItemBlock> normalItemBlocks = ImmutableList.builder();
 
-
-        normalItemBlocks.add(new ItemBlock(register(registry, "test", new Road(), CT_ROCK_BLOCKS)));
-
+        // Register a road for each block type, allows us to easily support things such as Rocks+
+        TFCRegistries.ROCKS.forEach(rock -> {
+            normalItemBlocks.add(new ItemBlock(register(registry,
+                    "road/" + rock.getRegistryName().getPath(),
+                    new Road(), CT_ROCK_BLOCKS)));
+        });
 
         allNormalItemBlocks = normalItemBlocks.build();
     }

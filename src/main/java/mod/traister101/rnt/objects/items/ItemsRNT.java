@@ -1,7 +1,5 @@
 package mod.traister101.rnt.objects.items;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableList.Builder;
 import mod.traister101.rnt.objects.blocks.BlocksRNT;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -22,10 +20,8 @@ public final class ItemsRNT {
     public static void registerItems(final Register<Item> event) {
 
         final IForgeRegistry<Item> registry = event.getRegistry();
-        Builder<Item> simpleItems = ImmutableList.builder();
 
         BlocksRNT.getAllNormalItemBlocks().forEach(x -> registerItemBlock(registry, x));
-//        BlocksRNT.getAllInventoryItemBlocks().forEach(x -> registerItemBlock(registry, x));
     }
 
     @SuppressWarnings("ConstantConditions")
