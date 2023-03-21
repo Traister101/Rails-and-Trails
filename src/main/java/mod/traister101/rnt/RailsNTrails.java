@@ -1,5 +1,7 @@
 package mod.traister101.rnt;
 
+import mod.traister101.rnt.client.ClientRegistry;
+import mod.traister101.rnt.objects.entities.EntitiesRNT;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -22,9 +24,25 @@ public final class RailsNTrails {
     private final Logger log = LogManager.getLogger(MODID);
     private SimpleNetworkWrapper network;
 
+    public static RailsNTrails getInstance() {
+        return INSTANCE;
+    }
+
+    public Logger getLog() {
+        return INSTANCE.log;
+    }
+
+    public SimpleNetworkWrapper getNetwork() {
+        return INSTANCE.network;
+    }
+
     @EventHandler
     public void preInit(final FMLPreInitializationEvent event) {
 
-    }
+        EntitiesRNT.preInit();
 
+        if (event.getSide().isClient()) {
+            ClientRegistry.preInit();
+        }
+    }
 }
