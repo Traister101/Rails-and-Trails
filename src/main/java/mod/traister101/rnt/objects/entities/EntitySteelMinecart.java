@@ -1,12 +1,19 @@
 package mod.traister101.rnt.objects.entities;
 
 import mcp.MethodsReturnNonnullByDefault;
-import net.minecraft.entity.item.EntityMinecart;
+import mod.traister101.rnt.objects.items.ItemsRNT;
+import net.minecraft.entity.item.EntityMinecartEmpty;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 
-@MethodsReturnNonnullByDefault
-public class EntitySteelMinecart extends EntityMinecart {
+import javax.annotation.ParametersAreNonnullByDefault;
 
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
+public class EntitySteelMinecart extends EntityMinecartEmpty {
+
+    @SuppressWarnings("unused")
     public EntitySteelMinecart(World worldIn) {
         super(worldIn);
     }
@@ -17,11 +24,25 @@ public class EntitySteelMinecart extends EntityMinecart {
 
     @Override
     protected double getMaximumSpeed() {
-        return super.getMaximumSpeed() * 10;
+        return super.getMaximumSpeed() * 1.5;
     }
 
     @Override
-    public Type getType() {
-        return Type.RIDEABLE;
+    public ItemStack getCartItem() {
+        return new ItemStack(ItemsRNT.STEEL_MINECART);
+    }
+
+    // This needs to be overridden so our minecart item drops
+    @Override
+    public void killMinecart(DamageSource source) {
+        setDead();
+
+        if (world.getGameRules().getBoolean("doEntityDrops")) {
+            final ItemStack itemstack = new ItemStack(ItemsRNT.STEEL_MINECART);
+
+            if (hasCustomName()) itemstack.setStackDisplayName(getCustomNameTag());
+
+            entityDropItem(itemstack, 0);
+        }
     }
 }

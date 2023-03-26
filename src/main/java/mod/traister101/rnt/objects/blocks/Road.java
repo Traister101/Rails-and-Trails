@@ -3,7 +3,9 @@ package mod.traister101.rnt.objects.blocks;
 import net.dries007.tfc.api.capability.size.IItemSize;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
+import net.dries007.tfc.api.types.Rock;
 import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
@@ -12,13 +14,23 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.HashMap;
+import java.util.Map;
 
 @ParametersAreNonnullByDefault
 
 public class Road extends Block implements IItemSize {
 
-    public Road() {
+    private static final Map<Rock, Road> ROAD_MAP = new HashMap<>();
+
+    public Road(Rock rock) {
         super(Material.ROCK);
+
+        ROAD_MAP.put(rock, this);
+
+        setSoundType(SoundType.STONE);
+        setHardness(rock.getRockCategory().getHardness()).setResistance(rock.getRockCategory().getResistance());
+        setHarvestLevel("pickaxe", 0);
     }
 
     @Override
@@ -31,15 +43,19 @@ public class Road extends Block implements IItemSize {
         super.onEntityWalk(worldIn, pos, entityIn);
     }
 
+    public static Road get(Rock rock) {
+        return ROAD_MAP.get(rock);
+    }
+
     @Nonnull
     @Override
     public Size getSize(@Nonnull ItemStack itemStack) {
-        return Size.NORMAL;
+        return Size.SMALL;
     }
 
     @Nonnull
     @Override
     public Weight getWeight(@Nonnull ItemStack itemStack) {
-        return Weight.MEDIUM;
+        return Weight.LIGHT;
     }
 }

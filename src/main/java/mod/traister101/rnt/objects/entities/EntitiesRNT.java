@@ -59,6 +59,6 @@ public final class EntitiesRNT {
     }
 
     private static void register(String name, Class<? extends Entity> cls) {
-        EntityRegistry.registerModEntity(new ResourceLocation(MODID, name), cls, name, id++, RailsNTrails.getInstance(), 160, 20, true);
+        EntityRegistry.registerModEntity(new ResourceLocation(MODID, name), cls, name, id++, RailsNTrails.getInstance(), 160, 1, true);
     }
 }

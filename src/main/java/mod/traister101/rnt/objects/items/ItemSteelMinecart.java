@@ -20,7 +20,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 @MethodsReturnNonnullByDefault
 public class ItemSteelMinecart extends ItemMinecart {
 
-    public ItemSteelMinecart(Type typeIn) {
+    public ItemSteelMinecart() {
         super(Type.RIDEABLE);
     }
 
