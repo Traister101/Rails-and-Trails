@@ -1,7 +1,6 @@
 package mod.traister101.rnt.objects.blocks;
 
 import net.dries007.tfc.api.types.Rock;
-import net.dries007.tfc.util.OreDictionaryHelper;
 import net.minecraft.block.BlockStairs;
 import net.minecraft.block.state.IBlockState;
 
@@ -19,6 +18,5 @@ public class RoadStairs extends BlockStairs {
 		//noinspection ConstantConditions
 		setHarvestLevel(road.getHarvestTool(state), road.getHarvestLevel(state));
 		useNeighborBrightness = true;
-		OreDictionaryHelper.register(this, "stair");
 	}
 }

@@ -2,7 +2,6 @@ package mod.traister101.rnt.objects.blocks;
 
 import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.api.types.Rock;
-import net.dries007.tfc.util.OreDictionaryHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.SoundType;
@@ -159,7 +158,6 @@ public abstract class RoadSlab extends BlockSlab {
 			doubleSlab = Double.get(rock);
 			doubleSlab.halfSlab = this;
 			halfSlab = this;
-			OreDictionaryHelper.register(this, "slab");
 		}
 
 		@Override

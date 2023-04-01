@@ -27,6 +27,7 @@ public final class BlocksRNT {
 	private static ImmutableList<RoadSlab.Half> allSlabBlocks;
 
 	private static ImmutableList<ItemBlock> allNormalItemBlocks;
+	private static ImmutableList<RoadStairs> allStairsBlocks;
 
 	public static ImmutableList<RoadSlab.Half> getAllSlabBlocks() {
 		return allSlabBlocks;
@@ -37,6 +38,7 @@ public final class BlocksRNT {
 	}
 
 	@SubscribeEvent
+	@SuppressWarnings("ConstantConditions")
 	public static void registerBlocks(Register<Block> event) {
 
 		final IForgeRegistry<Block> registry = event.getRegistry();
@@ -47,7 +49,6 @@ public final class BlocksRNT {
 
 		// Register a road for each block type, allows us to easily support things such as Rocks+
 		for (Rock rock : registeredRocks) {
-			//noinspection ConstantConditions
 			normalItemBlocks.add(new ItemBlockTFC(register(registry,
 			                                               "road/" + rock.getRegistryName().getPath(),
 			                                               new Road(rock), CT_ROCK_BLOCKS)));
@@ -59,7 +60,6 @@ public final class BlocksRNT {
 
 			// Stairs
 			for (Rock rock : registeredRocks) {
-				//noinspection ConstantConditions
 				stairs.add(register(registry,
 				                    "stairs/road/" + rock.getRegistryName().getPath(),
 				                    new RoadStairs(rock), CT_DECORATIONS));
@@ -67,7 +67,6 @@ public final class BlocksRNT {
 
 			// Full block slabs, managed by the half's
 			for (Rock rock : registeredRocks) {
-				//noinspection ConstantConditions
 				register(registry,
 				         "double_slab/road/" + rock.getRegistryName().getPath(),
 				         new RoadSlab.Double(rock), CT_DECORATIONS);
@@ -75,15 +74,13 @@ public final class BlocksRNT {
 
 			// Half slabs
 			for (Rock rock : registeredRocks) {
-				//noinspection ConstantConditions
 				slabs.add(register(registry,
 				                   "slab/road/" + rock.getRegistryName().getPath(),
 				                   new RoadSlab.Half(rock), CT_DECORATIONS));
 			}
 
 			allSlabBlocks = slabs.build();
-
-			stairs.build().forEach(x -> normalItemBlocks.add(new ItemBlockTFC(x)));
+			allStairsBlocks = stairs.build();
 		}
 
 		allNormalItemBlocks = normalItemBlocks.build();
@@ -99,5 +96,9 @@ public final class BlocksRNT {
 		block.setTranslationKey(MODID + "." + name.replace('/', '.'));
 		r.register(block);
 		return block;
+	}
+
+	public static ImmutableList<RoadStairs> getAllStairsBlocks() {
+		return allStairsBlocks;
 	}
 }

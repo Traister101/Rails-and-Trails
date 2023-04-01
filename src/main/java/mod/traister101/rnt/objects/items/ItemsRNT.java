@@ -4,6 +4,8 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableList.Builder;
 import mod.traister101.rnt.objects.blocks.BlocksRNT;
 import mod.traister101.rnt.objects.blocks.RoadSlab;
+import mod.traister101.rnt.objects.blocks.RoadStairs;
+import net.dries007.tfc.objects.items.itemblock.ItemBlockTFC;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -11,6 +13,7 @@ import net.minecraftforge.event.RegistryEvent.Register;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
+import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.registries.IForgeRegistry;
 
 import static mod.traister101.rnt.Helper.getNull;
@@ -40,11 +43,20 @@ public final class ItemsRNT {
 		BlocksRNT.getAllNormalItemBlocks().forEach(x -> registerItemBlock(registry, x));
 
 		for (RoadSlab.Half slab : BlocksRNT.getAllSlabBlocks()) {
-			//noinspection ConstantConditions
+			//noinspection DataFlowIssue
 			simpleItems.add(register(registry,
 			                         slab.getRegistryName().getPath(),
 			                         new ItemRoadSlab(slab, slab, slab.doubleSlab),
 			                         CT_DECORATIONS));
+			OreDictionary.registerOre("slab", slab);
+		}
+
+		for (RoadStairs stairs : BlocksRNT.getAllStairsBlocks()) {
+			//noinspection DataFlowIssue
+			simpleItems.add(register(registry,
+			                         stairs.getRegistryName().getPath(),
+			                         new ItemBlockTFC(stairs), CT_DECORATIONS));
+			OreDictionary.registerOre("stair", stairs);
 		}
 
 		allSimpleItems = simpleItems.build();
