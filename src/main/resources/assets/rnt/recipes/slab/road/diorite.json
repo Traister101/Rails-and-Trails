@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "rnt:road/diorite"
+    }
+  },
+  "result": {
+    "item": "rnt:slab/road/diorite",
+    "count": 6,
+    "data": 0
+  }
+}

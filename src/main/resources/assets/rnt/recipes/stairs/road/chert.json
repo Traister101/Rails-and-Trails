@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "X  ",
+    "XX ",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "rnt:road/chert"
+    }
+  },
+  "result": {
+    "item": "rnt:stairs/road/chert",
+    "count": 6
+  }
+}

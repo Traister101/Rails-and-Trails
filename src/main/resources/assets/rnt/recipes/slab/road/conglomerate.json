@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "rnt:road/conglomerate"
+    }
+  },
+  "result": {
+    "item": "rnt:slab/road/conglomerate",
+    "count": 6,
+    "data": 0
+  }
+}

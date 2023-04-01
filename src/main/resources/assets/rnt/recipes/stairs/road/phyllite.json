@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "X  ",
+    "XX ",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "rnt:road/phyllite"
+    }
+  },
+  "result": {
+    "item": "rnt:stairs/road/phyllite",
+    "count": 6
+  }
+}

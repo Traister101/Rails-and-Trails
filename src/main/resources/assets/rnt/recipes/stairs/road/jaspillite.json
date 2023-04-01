@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "X  ",
+    "XX ",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "rnt:road/jaspillite"
+    }
+  },
+  "result": {
+    "item": "rnt:stairs/road/jaspillite",
+    "count": 6
+  }
+}

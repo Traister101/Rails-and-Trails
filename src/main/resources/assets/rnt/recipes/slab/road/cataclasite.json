@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "rnt:road/cataclasite"
+    }
+  },
+  "result": {
+    "item": "rnt:slab/road/cataclasite",
+    "count": 6,
+    "data": 0
+  }
+}
