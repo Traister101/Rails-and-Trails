@@ -1,0 +1,21 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "top": "rnt:blocks/road/gabbro",
+      "bottom": "rnt:blocks/road/gabbro",
+      "side": "rnt:blocks/road/gabbro"
+    }
+  },
+  "variants": {
+    "normal": {
+      "model": "half_slab"
+    },
+    "half=bottom": {
+      "model": "half_slab"
+    },
+    "half=top": {
+      "model": "upper_slab"
+    }
+  }
+}

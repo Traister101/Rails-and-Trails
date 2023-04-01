@@ -1,0 +1,21 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "top": "rnt:blocks/road/limestone",
+      "bottom": "rnt:blocks/road/limestone",
+      "side": "rnt:blocks/road/limestone"
+    }
+  },
+  "variants": {
+    "normal": {
+      "model": "half_slab"
+    },
+    "half=bottom": {
+      "model": "half_slab"
+    },
+    "half=top": {
+      "model": "upper_slab"
+    }
+  }
+}

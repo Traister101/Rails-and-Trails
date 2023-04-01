@@ -1,0 +1,74 @@
+## Items
+
+item.rnt.minecart.steel.name=Steel Minecart
+
+## Blocks
+
+# Roads
+tile.rnt.road.granite.name=Granite Road
+tile.rnt.road.diorite.name=Diorite Road
+tile.rnt.road.gabbro.name=Gabbro Road
+tile.rnt.road.shale.name=Shale Road
+tile.rnt.road.claystone.name=Claystone Road
+tile.rnt.road.rocksalt.name=Rocksalt Road
+tile.rnt.road.limestone.name=Limestone Road
+tile.rnt.road.conglomerate.name=Conglomerate Road
+tile.rnt.road.dolomite.name=Dolomite Road
+tile.rnt.road.chert.name=Chert Road
+tile.rnt.road.chalk.name=Chalk Road
+tile.rnt.road.rhyolite.name=Rhyolite Road
+tile.rnt.road.basalt.name=Basalt Road
+tile.rnt.road.andesite.name=Andesite Road
+tile.rnt.road.dacite.name=Dacite Road
+tile.rnt.road.quartzite.name=Quartzite Road
+tile.rnt.road.slate.name=Slate Road
+tile.rnt.road.phyllite.name=Phyllite Road
+tile.rnt.road.schist.name=Schist Road
+tile.rnt.road.gneiss.name=Gneiss Road
+tile.rnt.road.marble.name=Marble Road
+
+# Stairs
+tile.rnt.stairs.road.granite.name=Granite Road Stairs
+tile.rnt.stairs.road.diorite.name=Diorite Road Stairs
+tile.rnt.stairs.road.gabbro.name=Gabbro Road Stairs
+tile.rnt.stairs.road.shale.name=Shale Road Stairs
+tile.rnt.stairs.road.claystone.name=Claystone Road Stairs
+tile.rnt.stairs.road.rocksalt.name=Rocksalt Road Stairs
+tile.rnt.stairs.road.limestone.name=Limestone Road Stairs
+tile.rnt.stairs.road.conglomerate.name=Conglomerate Road Stairs
+tile.rnt.stairs.road.dolomite.name=Dolomite Road Stairs
+tile.rnt.stairs.road.chert.name=Chert Road Stairs
+tile.rnt.stairs.road.chalk.name=Chalk Road Stairs
+tile.rnt.stairs.road.rhyolite.name=Rhyolite Road Stairs
+tile.rnt.stairs.road.basalt.name=Basalt Road Stairs
+tile.rnt.stairs.road.andesite.name=Andesite Road Stairs
+tile.rnt.stairs.road.dacite.name=Dacite Road Stairs
+tile.rnt.stairs.road.quartzite.name=Quartzite Road Stairs
+tile.rnt.stairs.road.slate.name=Slate Road Stairs
+tile.rnt.stairs.road.phyllite.name=Phyllite Road Stairs
+tile.rnt.stairs.road.schist.name=Schist Road Stairs
+tile.rnt.stairs.road.gneiss.name=Gneiss Road Stairs
+tile.rnt.stairs.road.marble.name=Marble Road Stairs
+
+# Slab
+tile.rnt.slab.road.granite.name=Granite Road Slab
+tile.rnt.slab.road.diorite.name=Diorite Road Slab
+tile.rnt.slab.road.gabbro.name=Gabbro Road Slab
+tile.rnt.slab.road.shale.name=Shale Road Slab
+tile.rnt.slab.road.claystone.name=Claystone Road Slab
+tile.rnt.slab.road.rocksalt.name=Rocksalt Road Slab
+tile.rnt.slab.road.limestone.name=Limestone Road Slab
+tile.rnt.slab.road.conglomerate.name=Conglomerate Road Slab
+tile.rnt.slab.road.dolomite.name=Dolomite Road Slab
+tile.rnt.slab.road.chert.name=Chert Road Slab
+tile.rnt.slab.road.chalk.name=Chalk Road Slab
+tile.rnt.slab.road.rhyolite.name=Rhyolite Road Slab
+tile.rnt.slab.road.basalt.name=Basalt Road Slab
+tile.rnt.slab.road.andesite.name=Andesite Road Slab
+tile.rnt.slab.road.dacite.name=Dacite Road Slab
+tile.rnt.slab.road.quartzite.name=Quartzite Road Slab
+tile.rnt.slab.road.slate.name=Slate Road Slab
+tile.rnt.slab.road.phyllite.name=Phyllite Road Slab
+tile.rnt.slab.road.schist.name=Schist Road Slab
+tile.rnt.slab.road.gneiss.name=Gneiss Road Slab
+tile.rnt.slab.road.marble.name=Marble Road Slab

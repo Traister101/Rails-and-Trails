@@ -1,0 +1,21 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "top": "rnt:blocks/road/rocksalt",
+      "bottom": "rnt:blocks/road/rocksalt",
+      "side": "rnt:blocks/road/rocksalt"
+    }
+  },
+  "variants": {
+    "normal": {
+      "model": "half_slab"
+    },
+    "half=bottom": {
+      "model": "half_slab"
+    },
+    "half=top": {
+      "model": "upper_slab"
+    }
+  }
+}
