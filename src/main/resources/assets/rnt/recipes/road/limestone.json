@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "GSG",
+    "SMS",
+    "GSG"
+  ],
+  "key": {
+    "G": {
+      "type": "forge:ore_dict",
+      "ore": "gravel"
+    },
+    "S": {
+      "item": "tfc:brick/limestone"
+    },
+    "M": {
+      "item": "tfc:mortar"
+    }
+  },
+  "result": {
+    "item": "rnt:road/limestone",
+    "count": 8
+  }
+}

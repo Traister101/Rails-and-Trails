@@ -1,7 +1,7 @@
 import os
 from typing import TextIO
 
-from dataGen import CubeAll, Slab, Stairs, Item, SlabRecipe, StairsRecipe
+from dataGen import CubeAll, Slab, Stairs, Item, SlabRecipe, StairsRecipe, ShapedRecipe, Result, Ingredient
 
 ROCK_TYPES: list[str] = [
     "granite",
@@ -75,6 +75,10 @@ def main():
         # Road blocks, Stairs and Slabs
         roadTexture = f"rnt:blocks/road/{rock_type}"
         CubeAll(f"road/{rock_type}", roadTexture)
+        ShapedRecipe(f"road/{rock_type}", ["GSG", "SMS", "GSG"],
+                     {"G": Ingredient(ore="gravel"), "S": Ingredient(itemID=f"tfc:brick/{rock_type}"),
+                      "M": Ingredient(itemID="tfc:mortar")},
+                     Result(f"rnt:road/{rock_type}", 8))
 
         Slab(f"road/{rock_type}", roadTexture)
         SlabRecipe(f"slab/road/{rock_type}", f"rnt:road/{rock_type}", f"rnt:slab/road/{rock_type}")
