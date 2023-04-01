@@ -1,7 +1,7 @@
 import os
 from typing import TextIO
 
-from MC_Asset_Generators import Item, Slab, Stairs, CubeAll
+from dataGen import CubeAll, Slab, Stairs, Item
 
 ROCK_TYPES: list[str] = [
     "granite",
