@@ -23,7 +23,8 @@ import static mod.traister101.rnt.RailsNTrails.MODID;
 @EventBusSubscriber(modid = MODID)
 public final class EntitiesRNT {
 
-	private static final DataSerializer<Long> LONG_DATA_SERIALIZER = new DataSerializer<>() {
+	@SuppressWarnings("Convert2Diamond")
+	private static final DataSerializer<Long> LONG_DATA_SERIALIZER = new DataSerializer<Long>() {
 		public void write(PacketBuffer buf, @Nonnull Long value) {
 			buf.writeLong(value);
 		}
