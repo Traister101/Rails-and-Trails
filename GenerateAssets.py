@@ -1,7 +1,7 @@
 import os
 from typing import TextIO
 
-from dataGen import CubeAll, Slab, Stairs, Item
+from dataGen import CubeAll, Slab, Stairs, Item, SlabRecipe, StairsRecipe
 
 ROCK_TYPES: list[str] = [
     "granite",
@@ -24,7 +24,20 @@ ROCK_TYPES: list[str] = [
     "phyllite",
     "schist",
     "gneiss",
-    "marble"
+    "marble",
+    # Rocks+ types
+    "blaimorite",
+    "boninite",
+    "carbonatite",
+    "foidolite",
+    "arkose",
+    "jaspillite",
+    "travertine",
+    "wackestone",
+    "blueschist",
+    "greenschist",
+    "cataclasite",
+    "mylonite"
 ]
 
 
@@ -62,8 +75,12 @@ def main():
         # Road blocks, Stairs and Slabs
         roadTexture = f"rnt:blocks/road/{rock_type}"
         CubeAll(f"road/{rock_type}", roadTexture)
+
         Slab(f"road/{rock_type}", roadTexture)
+        SlabRecipe(f"slab/road/{rock_type}", f"rnt:road/{rock_type}", f"rnt:slab/road/{rock_type}")
+
         Stairs(f"stairs/road/{rock_type}", roadTexture)
+        StairsRecipe(f"stairs/road/{rock_type}", f"rnt:road/{rock_type}", f"rnt:stairs/road/{rock_type}")
 
     # Minecart metal types?
     Item("minecart/steel", "rnt:items/minecart/steel")
@@ -75,3 +92,4 @@ if __name__ == "__main__":
     # Put us inside or mod assets
     os.chdir("src/main/resources/assets/rnt/")
     main()
+    print("Files generated!")
