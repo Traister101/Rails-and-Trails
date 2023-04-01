@@ -1,7 +1,7 @@
 package mod.traister101.rnt.objects.entities;
 
+import mcp.MethodsReturnNonnullByDefault;
 import mod.traister101.rnt.RailsNTrails;
-import net.dries007.tfc.util.Helpers;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.datasync.DataParameter;
@@ -11,54 +11,51 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
-import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 import net.minecraftforge.registries.DataSerializerEntry;
 
 import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import static mod.traister101.rnt.RailsNTrails.MODID;
 
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 @EventBusSubscriber(modid = MODID)
 public final class EntitiesRNT {
-    @ObjectHolder("rnt:long")
-    public static final DataSerializerEntry LONG_DATA_SERIALIZER_ENTRY = Helpers.getNull();
 
-    private static final DataSerializer<Long> LONG_DATA_SERIALIZER = new DataSerializer<Long>() {
-        public void write(PacketBuffer buf, @Nonnull Long value) {
-            buf.writeLong(value);
-        }
+	private static final DataSerializer<Long> LONG_DATA_SERIALIZER = new DataSerializer<>() {
+		public void write(PacketBuffer buf, @Nonnull Long value) {
+			buf.writeLong(value);
+		}
 
-        public Long read(PacketBuffer buf) {
-            return buf.readLong();
-        }
+		public Long read(PacketBuffer buf) {
+			return buf.readLong();
+		}
 
-        public DataParameter<Long> createKey(int id) {
-            return new DataParameter<>(id, this);
-        }
+		public DataParameter<Long> createKey(int id) {
+			return new DataParameter<>(id, this);
+		}
 
-        @Nonnull
-        public Long copyValue(@Nonnull Long value) {
-            return value;
-        }
-    };
+		@Nonnull
+		public Long copyValue(@Nonnull Long value) {
+			return value;
+		}
+	};
 
-    private static int id = 1; // don't use id 0, it's easier to debug if something goes wrong
+	private static int id = 1; // don't use id 0, it's easier to debug if something goes wrong
 
-    @SuppressWarnings("unchecked")
-    public static DataSerializer<Long> getLongDataSerializer() {
-        return (DataSerializer<Long>) LONG_DATA_SERIALIZER_ENTRY.getSerializer();
-    }
+	@SubscribeEvent
+	public static void registerDataSerializers(RegistryEvent.Register<DataSerializerEntry> event) {
+		event.getRegistry().register(new DataSerializerEntry(LONG_DATA_SERIALIZER).setRegistryName("long"));
+	}
 
-    @SubscribeEvent
-    public static void registerDataSerializers(RegistryEvent.Register<DataSerializerEntry> event) {
-        event.getRegistry().register(new DataSerializerEntry(LONG_DATA_SERIALIZER).setRegistryName("long"));
-    }
+	public static void preInit() {
+		register("steel_minecart", EntitySteelMinecart.class);
+	}
 
-    public static void preInit() {
-        register("steel_minecart", EntitySteelMinecart.class);
-    }
 
-    private static void register(String name, Class<? extends Entity> cls) {
-        EntityRegistry.registerModEntity(new ResourceLocation(MODID, name), cls, name, id++, RailsNTrails.getInstance(), 160, 1, true);
-    }
+	@SuppressWarnings("SameParameterValue")
+	private static void register(String name, Class<? extends Entity> cls) {
+		EntityRegistry.registerModEntity(new ResourceLocation(MODID, name), cls, name, id++, RailsNTrails.getInstance(), 160, 1, true);
+	}
 }

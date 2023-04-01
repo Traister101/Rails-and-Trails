@@ -20,36 +20,36 @@ import javax.annotation.ParametersAreNonnullByDefault;
 @MethodsReturnNonnullByDefault
 public class ItemSteelMinecart extends ItemMinecart {
 
-    public ItemSteelMinecart() {
-        super(Type.RIDEABLE);
-    }
+	public ItemSteelMinecart() {
+		super(Type.RIDEABLE);
+	}
 
-    @Override
-    public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	@Override
+	public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 
-        final IBlockState iblockstate = worldIn.getBlockState(pos);
+		final IBlockState iblockstate = worldIn.getBlockState(pos);
 
-        if (!BlockRailBase.isRailBlock(iblockstate))
-            return EnumActionResult.FAIL;
-
-
-        final ItemStack itemstack = player.getHeldItem(hand);
-
-        if (!worldIn.isRemote) {
-            BlockRailBase.EnumRailDirection enumRailDirection = iblockstate.getBlock() instanceof BlockRailBase ? ((BlockRailBase) iblockstate.getBlock()).getRailDirection(worldIn, pos, iblockstate, null) : BlockRailBase.EnumRailDirection.NORTH_SOUTH;
-
-            final double height = enumRailDirection.isAscending() ? 0.5 : 0;
-
-            final EntitySteelMinecart minecart = new EntitySteelMinecart(worldIn, pos.getX() + 0.5, pos.getY() + 0.0625 + height, pos.getZ() + 0.5);
-
-            if (itemstack.hasDisplayName())
-                minecart.setCustomNameTag(itemstack.getDisplayName());
+		if (!BlockRailBase.isRailBlock(iblockstate))
+			return EnumActionResult.FAIL;
 
 
-            worldIn.spawnEntity(minecart);
-        }
+		final ItemStack itemstack = player.getHeldItem(hand);
 
-        itemstack.shrink(1);
-        return EnumActionResult.SUCCESS;
-    }
+		if (!worldIn.isRemote) {
+			BlockRailBase.EnumRailDirection enumRailDirection = iblockstate.getBlock() instanceof BlockRailBase ? ((BlockRailBase) iblockstate.getBlock()).getRailDirection(worldIn, pos, iblockstate, null) : BlockRailBase.EnumRailDirection.NORTH_SOUTH;
+
+			final double height = enumRailDirection.isAscending() ? 0.5 : 0;
+
+			final EntitySteelMinecart minecart = new EntitySteelMinecart(worldIn, pos.getX() + 0.5, pos.getY() + 0.0625 + height, pos.getZ() + 0.5);
+
+			if (itemstack.hasDisplayName())
+				minecart.setCustomNameTag(itemstack.getDisplayName());
+
+
+			worldIn.spawnEntity(minecart);
+		}
+
+		itemstack.shrink(1);
+		return EnumActionResult.SUCCESS;
+	}
 }

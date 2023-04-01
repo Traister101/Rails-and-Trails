@@ -10,14 +10,15 @@ import javax.annotation.ParametersAreNonnullByDefault;
 @ParametersAreNonnullByDefault
 public class RoadStairs extends BlockStairs {
 
-    public RoadStairs(Rock rock) {
-        super(Road.get(rock).getDefaultState());
+	public RoadStairs(Rock rock) {
+		super(Road.get(rock).getDefaultState());
 
-        final Road road = Road.get(rock);
-        final IBlockState state = road.getDefaultState();
+		final Road road = Road.get(rock);
+		final IBlockState state = road.getDefaultState();
 
-        //noinspection ConstantConditions
-        setHarvestLevel(road.getHarvestTool(state), road.getHarvestLevel(state));
-        OreDictionaryHelper.register(this, "stair");
-    }
+		//noinspection ConstantConditions
+		setHarvestLevel(road.getHarvestTool(state), road.getHarvestLevel(state));
+		useNeighborBrightness = true;
+		OreDictionaryHelper.register(this, "stair");
+	}
 }

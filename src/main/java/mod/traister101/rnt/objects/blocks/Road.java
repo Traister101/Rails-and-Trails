@@ -21,41 +21,41 @@ import java.util.Map;
 
 public class Road extends Block implements IItemSize {
 
-    private static final Map<Rock, Road> ROAD_MAP = new HashMap<>();
+	private static final Map<Rock, Road> ROAD_MAP = new HashMap<>();
 
-    public Road(Rock rock) {
-        super(Material.ROCK);
+	public Road(Rock rock) {
+		super(Material.ROCK);
 
-        ROAD_MAP.put(rock, this);
+		ROAD_MAP.put(rock, this);
 
-        setSoundType(SoundType.STONE);
-        setHardness(rock.getRockCategory().getHardness()).setResistance(rock.getRockCategory().getResistance());
-        setHarvestLevel("pickaxe", 0);
-    }
+		setSoundType(SoundType.STONE);
+		setHardness(rock.getRockCategory().getHardness()).setResistance(rock.getRockCategory().getResistance());
+		setHarvestLevel("pickaxe", 0);
+	}
 
-    @Override
-    public void onEntityWalk(final World worldIn, final BlockPos pos, final Entity entityIn) {
+	public static Road get(Rock rock) {
+		return ROAD_MAP.get(rock);
+	}
 
-        final double modifier = 1.2;
-        entityIn.motionX *= modifier;
-        entityIn.motionZ *= modifier;
+	@Override
+	public void onEntityWalk(final World worldIn, final BlockPos pos, final Entity entityIn) {
 
-        super.onEntityWalk(worldIn, pos, entityIn);
-    }
+		final double modifier = 1.2;
+		entityIn.motionX *= modifier;
+		entityIn.motionZ *= modifier;
 
-    public static Road get(Rock rock) {
-        return ROAD_MAP.get(rock);
-    }
+		super.onEntityWalk(worldIn, pos, entityIn);
+	}
 
-    @Nonnull
-    @Override
-    public Size getSize(@Nonnull ItemStack itemStack) {
-        return Size.SMALL;
-    }
+	@Nonnull
+	@Override
+	public Size getSize(@Nonnull ItemStack itemStack) {
+		return Size.SMALL;
+	}
 
-    @Nonnull
-    @Override
-    public Weight getWeight(@Nonnull ItemStack itemStack) {
-        return Weight.LIGHT;
-    }
+	@Nonnull
+	@Override
+	public Weight getWeight(@Nonnull ItemStack itemStack) {
+		return Weight.LIGHT;
+	}
 }

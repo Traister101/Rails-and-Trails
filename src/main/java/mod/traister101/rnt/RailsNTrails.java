@@ -6,7 +6,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -15,34 +14,30 @@ import static mod.traister101.rnt.RailsNTrails.*;
 @SuppressWarnings("FieldMayBeFinal")
 @Mod(modid = MODID, name = NAME, version = VERSION, dependencies = "required-after:tfc@1.7.18.176", useMetadata = true)
 public final class RailsNTrails {
-    public static final String MODID = "@MODID@";
-    public static final String NAME = "@MODNAME@";
-    public static final String VERSION = "@VERSION@";
+	public static final String MODID = "@MODID@";
+	public static final String NAME = "@MODNAME@";
+	public static final String VERSION = "@VERSION@";
 
-    @Instance
-    private static RailsNTrails INSTANCE = null;
-    private final Logger log = LogManager.getLogger(MODID);
-    private SimpleNetworkWrapper network;
+	@Instance
+	private static RailsNTrails INSTANCE = null;
+	private final Logger log = LogManager.getLogger(MODID);
 
-    public static RailsNTrails getInstance() {
-        return INSTANCE;
-    }
+	public static RailsNTrails getInstance() {
+		return INSTANCE;
+	}
 
-    public Logger getLog() {
-        return INSTANCE.log;
-    }
+	@SuppressWarnings("unused")
+	public Logger getLog() {
+		return INSTANCE.log;
+	}
 
-    public SimpleNetworkWrapper getNetwork() {
-        return INSTANCE.network;
-    }
+	@EventHandler
+	public void preInit(final FMLPreInitializationEvent event) {
 
-    @EventHandler
-    public void preInit(final FMLPreInitializationEvent event) {
+		EntitiesRNT.preInit();
 
-        EntitiesRNT.preInit();
-
-        if (event.getSide().isClient()) {
-            ClientRegistry.preInit();
-        }
-    }
+		if (event.getSide().isClient()) {
+			ClientRegistry.preInit();
+		}
+	}
 }

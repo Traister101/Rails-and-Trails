@@ -5,11 +5,13 @@ import net.dries007.tfc.api.types.Rock;
 import net.dries007.tfc.util.OreDictionaryHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSlab;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
@@ -18,121 +20,151 @@ import net.minecraft.world.World;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class RoadSlab extends BlockSlab {
+public abstract class RoadSlab extends BlockSlab {
 
-    public static final PropertyEnum<Variant> VARIANT = PropertyEnum.create("variant", Variant.class);
-    public final Block modelBlock;
-    protected Half halfSlab;
+	public static final PropertyEnum<Variant> VARIANT = PropertyEnum.create("variant", Variant.class);
+	public final Block modelBlock;
+	protected Half halfSlab;
 
-    public RoadSlab(Rock rock) {
-        super(Road.get(rock).getDefaultState().getMaterial());
+	public RoadSlab(Rock rock) {
+		super(Road.get(rock).getDefaultState().getMaterial());
 
-        IBlockState state = blockState.getBaseState();
-        if (!isDouble()) state = state.withProperty(HALF, EnumBlockHalf.BOTTOM);
-        setDefaultState(state.withProperty(VARIANT, Variant.DEFAULT));
-        modelBlock = Road.get(rock);
-        useNeighborBrightness = true;
-        setLightOpacity(255);
-    }
+		IBlockState state = blockState.getBaseState();
+		if (!isDouble()) state = state.withProperty(HALF, EnumBlockHalf.BOTTOM);
+		setDefaultState(state.withProperty(VARIANT, Variant.DEFAULT));
 
-    @Override
-    public void onEntityWalk(final World worldIn, final BlockPos pos, final Entity entityIn) {
+		modelBlock = Road.get(rock);
+		//noinspection ConstantConditions
+		setHarvestLevel(modelBlock.getHarvestTool(modelBlock.getDefaultState()), modelBlock.getHarvestLevel(modelBlock.getDefaultState()));
+		useNeighborBrightness = true;
+		setLightOpacity(255);
+	}
 
-        final double modifier = 1.2;
-        entityIn.motionX *= modifier;
-        entityIn.motionZ *= modifier;
+	@Override
+	public void onEntityWalk(final World worldIn, final BlockPos pos, final Entity entityIn) {
+		modelBlock.onEntityWalk(worldIn, pos, entityIn);
+	}
 
-        super.onEntityWalk(worldIn, pos, entityIn);
-    }
+	@Override
+	public String getTranslationKey(int meta) {
+		return super.getTranslationKey();
+	}
 
-    @Override
-    public String getTranslationKey(int meta) {
-        return super.getTranslationKey();
-    }
+	@Override
+	public IProperty<?> getVariantProperty() {
+		return VARIANT;
+	}
 
-    @Override
-    public boolean isDouble() {
-        return false;
-    }
+	@Override
+	public Comparable<?> getTypeForItem(ItemStack stack) {
+		return Variant.DEFAULT;
+	}
 
-    @Override
-    public IProperty<?> getVariantProperty() {
-        return VARIANT;
-    }
+	@Override
+	@SuppressWarnings("deprecation")
+	public IBlockState getStateFromMeta(int meta) {
+		IBlockState state = this.getDefaultState().withProperty(VARIANT, Variant.DEFAULT);
 
-    @Override
-    public Comparable<?> getTypeForItem(ItemStack stack) {
-        return Variant.DEFAULT;
-    }
+		if (!this.isDouble())
+			state = state.withProperty(HALF, (meta & 8) == 0 ? BlockSlab.EnumBlockHalf.BOTTOM : BlockSlab.EnumBlockHalf.TOP);
 
-    @Override
-    public int getMetaFromState(IBlockState state) {
-        int i = 0;
+		return state;
+	}
 
-        if (!isDouble() && state.getValue(HALF) == EnumBlockHalf.TOP)
-            i |= 8;
+	@Override
+	public int getMetaFromState(IBlockState state) {
+		int i = 0;
 
-        return i;
-    }
+		if (!isDouble() && state.getValue(HALF) == EnumBlockHalf.TOP)
+			i |= 8;
 
-    @Override
-    protected BlockStateContainer createBlockState() {
-        return isDouble() ? new BlockStateContainer(this, VARIANT) : new BlockStateContainer(this, HALF, VARIANT);
-    }
+		return i;
+	}
 
-    public enum Variant implements IStringSerializable {
-        DEFAULT;
+	@Override
+	@SuppressWarnings("deprecation")
+	public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos) {
+		return modelBlock.getBlockHardness(blockState, worldIn, pos);
+	}
 
-        @Override
-        public String getName() {
-            return "default";
-        }
-    }
+	@Override
+	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+		return Item.getItemFromBlock(halfSlab);
+	}
 
-    public static class Double extends RoadSlab {
+	@Override
+	@SuppressWarnings("deprecation")
+	public float getExplosionResistance(Entity exploder) {
+		return modelBlock.getExplosionResistance(exploder);
+	}
 
-        private static final Map<Rock, Double> ROCK_TABLE = new HashMap<>();
+	@Override
+	@SuppressWarnings("deprecation")
+	public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state) {
+		return new ItemStack(halfSlab);
+	}
 
-        public Double(Rock rock) {
-            super(rock);
+	@Override
+	protected BlockStateContainer createBlockState() {
+		return isDouble() ? new BlockStateContainer(this, VARIANT) : new BlockStateContainer(this, HALF, VARIANT);
+	}
 
-            ROCK_TABLE.put(rock, this);
-        }
+	@Override
+	@SuppressWarnings("deprecation")
+	public SoundType getSoundType() {
+		return modelBlock.getSoundType();
+	}
 
-        public static Double get(Rock rock) {
-            return ROCK_TABLE.get(rock);
-        }
+	public enum Variant implements IStringSerializable {
+		DEFAULT;
+
+		@Override
+		public String getName() {
+			return "default";
+		}
+	}
+
+	public static class Double extends RoadSlab {
+
+		private static final Map<Rock, Double> ROCK_TABLE = new HashMap<>();
+
+		public Double(Rock rock) {
+			super(rock);
+
+			ROCK_TABLE.put(rock, this);
+		}
+
+		public static Double get(Rock rock) {
+			return ROCK_TABLE.get(rock);
+		}
 
 
-        @Override
-        public boolean isDouble() {
-            return true;
-        }
-    }
+		@Override
+		public boolean isDouble() {
+			return true;
+		}
+	}
 
-    public static class Half extends RoadSlab {
+	public static class Half extends RoadSlab {
 
-        private static final Map<Rock, Half> ROCK_TABLE = new HashMap<>();
+		public final Double doubleSlab;
 
-        public final Double doubleSlab;
+		public Half(Rock rock) {
+			super(rock);
 
-        public Half(Rock rock) {
-            super(rock);
+			doubleSlab = Double.get(rock);
+			doubleSlab.halfSlab = this;
+			halfSlab = this;
+			OreDictionaryHelper.register(this, "slab");
+		}
 
-            ROCK_TABLE.put(rock, this);
-
-            doubleSlab = Double.get(rock);
-            doubleSlab.halfSlab = this;
-            halfSlab = this;
-            OreDictionaryHelper.register(this, "slab");
-        }
-
-        @Override
-        public boolean isDouble() {
-            return false;
-        }
-    }
+		@Override
+		public boolean isDouble() {
+			return false;
+		}
+	}
 }
