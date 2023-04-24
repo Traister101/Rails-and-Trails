@@ -38,7 +38,7 @@ public final class ClientRegistry {
 		for (final Item item : ItemsRNT.getAllSimpleItems())
 			registerBasicItemRenderer(item);
 
-		// Wonky slab state registration
+		// Ignore the "default" state of our slabs
 		for (RoadSlab.Half slab : BlocksRNT.getAllSlabBlocks()) {
 			ModelLoader.setCustomStateMapper(slab, new StateMap.Builder().ignore(RoadSlab.VARIANT).build());
 			ModelLoader.setCustomStateMapper(slab.doubleSlab, new StateMap.Builder().ignore(RoadSlab.VARIANT).build());

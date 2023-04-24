@@ -1,6 +1,5 @@
 ## Items
-
-item.rnt.minecart.steel.name=Steel Minecart
+item.rnt.minecart.steel.name.name=Steel Minecart
 
 ## Blocks
 
@@ -108,3 +107,4 @@ tile.rnt.slab.road.blueschist.name=Blueschist Road Slab
 tile.rnt.slab.road.greenschist.name=Greenschist Road Slab
 tile.rnt.slab.road.cataclasite.name=Cataclasite Road Slab
 tile.rnt.slab.road.mylonite.name=Mylonite Road Slab
+
