@@ -26,7 +26,8 @@ import java.util.Random;
 public abstract class RoadSlab extends BlockSlab {
 
 	public static final PropertyEnum<Variant> VARIANT = PropertyEnum.create("variant", Variant.class);
-	public final Block modelBlock;
+	/// The block the slab is a "child" of. IE which block our slab should act like
+	public final Block parentBlock;
 	protected Half halfSlab;
 
 	public RoadSlab(Rock rock) {
@@ -36,16 +37,17 @@ public abstract class RoadSlab extends BlockSlab {
 		if (!isDouble()) state = state.withProperty(HALF, EnumBlockHalf.BOTTOM);
 		setDefaultState(state.withProperty(VARIANT, Variant.DEFAULT));
 
-		modelBlock = Road.get(rock);
+		parentBlock = Road.get(rock);
+		final IBlockState defaultState = parentBlock.getDefaultState();
 		//noinspection ConstantConditions
-		setHarvestLevel(modelBlock.getHarvestTool(modelBlock.getDefaultState()), modelBlock.getHarvestLevel(modelBlock.getDefaultState()));
+		setHarvestLevel(parentBlock.getHarvestTool(defaultState), parentBlock.getHarvestLevel(defaultState));
 		useNeighborBrightness = true;
 		setLightOpacity(255);
 	}
 
 	@Override
 	public void onEntityWalk(final World worldIn, final BlockPos pos, final Entity entityIn) {
-		modelBlock.onEntityWalk(worldIn, pos, entityIn);
+		parentBlock.onEntityWalk(worldIn, pos, entityIn);
 	}
 
 	@Override
@@ -87,7 +89,7 @@ public abstract class RoadSlab extends BlockSlab {
 	@Override
 	@SuppressWarnings("deprecation")
 	public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos) {
-		return modelBlock.getBlockHardness(blockState, worldIn, pos);
+		return parentBlock.getBlockHardness(blockState, worldIn, pos);
 	}
 
 	@Override
@@ -98,7 +100,7 @@ public abstract class RoadSlab extends BlockSlab {
 	@Override
 	@SuppressWarnings("deprecation")
 	public float getExplosionResistance(Entity exploder) {
-		return modelBlock.getExplosionResistance(exploder);
+		return parentBlock.getExplosionResistance(exploder);
 	}
 
 	@Override
@@ -115,7 +117,7 @@ public abstract class RoadSlab extends BlockSlab {
 	@Override
 	@SuppressWarnings("deprecation")
 	public SoundType getSoundType() {
-		return modelBlock.getSoundType();
+		return parentBlock.getSoundType();
 	}
 
 	public enum Variant implements IStringSerializable {
@@ -129,6 +131,7 @@ public abstract class RoadSlab extends BlockSlab {
 
 	public static class Double extends RoadSlab {
 
+		/// Map containing rock double slab pairs to better manage slabs
 		private static final Map<Rock, Double> ROCK_TABLE = new HashMap<>();
 
 		public Double(Rock rock) {
@@ -137,6 +140,12 @@ public abstract class RoadSlab extends BlockSlab {
 			ROCK_TABLE.put(rock, this);
 		}
 
+		/**
+		 * Returns the double slab variant for the rock type
+		 *
+		 * @param rock type of this rock
+		 * @return Double slab for given rock type
+		 */
 		public static Double get(Rock rock) {
 			return ROCK_TABLE.get(rock);
 		}

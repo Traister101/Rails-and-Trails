@@ -12,7 +12,7 @@ import org.apache.logging.log4j.Logger;
 import static mod.traister101.rnt.RailsNTrails.*;
 
 @SuppressWarnings("FieldMayBeFinal")
-@Mod(modid = MODID, name = NAME, version = VERSION, dependencies = "required-after:tfc@1.7.18.176", useMetadata = true)
+@Mod(modid = MODID, name = NAME, version = VERSION, useMetadata = true)
 public final class RailsNTrails {
 	public static final String MODID = "@MODID@";
 	public static final String NAME = "@MODNAME@";
@@ -27,7 +27,7 @@ public final class RailsNTrails {
 	}
 
 	@SuppressWarnings("unused")
-	public Logger getLog() {
+	public static Logger getLog() {
 		return INSTANCE.log;
 	}
 
