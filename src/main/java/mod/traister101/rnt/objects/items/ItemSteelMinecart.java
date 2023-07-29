@@ -2,6 +2,9 @@ package mod.traister101.rnt.objects.items;
 
 import mcp.MethodsReturnNonnullByDefault;
 import mod.traister101.rnt.objects.entities.EntitySteelMinecart;
+import net.dries007.tfc.api.capability.size.IItemSize;
+import net.dries007.tfc.api.capability.size.Size;
+import net.dries007.tfc.api.capability.size.Weight;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.block.BlockRailBase;
 import net.minecraft.block.BlockRailBase.EnumRailDirection;
@@ -20,11 +23,12 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class ItemSteelMinecart extends Item {
+public class ItemSteelMinecart extends Item implements IItemSize {
 	private static final IBehaviorDispenseItem MINECART_DISPENSER_BEHAVIOR = new BehaviorDefaultDispenseItem() {
 		private final BehaviorDefaultDispenseItem behaviourDefaultDispenseItem = new BehaviorDefaultDispenseItem();
 
@@ -105,5 +109,17 @@ public class ItemSteelMinecart extends Item {
 
 		itemstack.shrink(1);
 		return EnumActionResult.SUCCESS;
+	}
+
+	@Nonnull
+	@Override
+	public Size getSize(@Nonnull ItemStack itemStack) {
+		return Size.LARGE;
+	}
+
+	@Nonnull
+	@Override
+	public Weight getWeight(@Nonnull ItemStack itemStack) {
+		return Weight.VERY_HEAVY;
 	}
 }

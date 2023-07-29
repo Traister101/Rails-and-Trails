@@ -24,6 +24,7 @@ import static net.dries007.tfc.objects.CreativeTabsTFC.CT_DECORATIONS;
 @EventBusSubscriber(modid = MODID)
 public final class ItemsRNT {
 
+	@ObjectHolder("minecart/steel")
 	public static final Item STEEL_MINECART = getNull();
 
 	private static ImmutableList<Item> allSimpleItems;
@@ -45,17 +46,17 @@ public final class ItemsRNT {
 		for (RoadSlab.Half slab : BlocksRNT.getAllSlabBlocks()) {
 			//noinspection DataFlowIssue
 			simpleItems.add(register(registry,
-			                         slab.getRegistryName().getPath(),
-			                         new ItemRoadSlab(slab, slab, slab.doubleSlab),
-			                         CT_DECORATIONS));
+					slab.getRegistryName().getPath(),
+					new ItemRoadSlab(slab, slab, slab.doubleSlab),
+					CT_DECORATIONS));
 			OreDictionary.registerOre("slab", slab);
 		}
 
 		for (RoadStairs stairs : BlocksRNT.getAllStairsBlocks()) {
 			//noinspection DataFlowIssue
 			simpleItems.add(register(registry,
-			                         stairs.getRegistryName().getPath(),
-			                         new ItemBlockTFC(stairs), CT_DECORATIONS));
+					stairs.getRegistryName().getPath(),
+					new ItemBlockTFC(stairs), CT_DECORATIONS));
 			OreDictionary.registerOre("stair", stairs);
 		}
 
