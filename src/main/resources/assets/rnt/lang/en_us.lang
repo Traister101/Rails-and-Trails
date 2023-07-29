@@ -1,8 +1,9 @@
 ## Items
-item.rnt.minecart.steel.name.name=Steel Minecart
+item.rnt.minecart.steel.name=Steel Minecart
 
 ## Blocks
 
+tile.rnt.rose_gold_rail.name=Rose Gold Rail
 # Roads
 tile.rnt.road.granite.name=Granite Road
 tile.rnt.road.diorite.name=Diorite Road
@@ -108,3 +109,6 @@ tile.rnt.slab.road.greenschist.name=Greenschist Road Slab
 tile.rnt.slab.road.cataclasite.name=Cataclasite Road Slab
 tile.rnt.slab.road.mylonite.name=Mylonite Road Slab
 
+entity.steel_minecart.name=Steel Minecart
+config.rnt.road=Road Config
+config.rnt.road.move_speed_modifier=Move Speed Modifier

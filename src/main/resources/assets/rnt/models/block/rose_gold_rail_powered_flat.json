@@ -1,0 +1,6 @@
+{
+    "parent": "block/rail_flat",
+    "textures": {
+        "rail": "rnt:blocks/rose_gold_rail_powered"
+    }
+}

@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "rnt:items/minecart/steel"
+    "layer0": "rnt:blocks/rose_gold_rail"
   }
 }

@@ -1,13 +1,7 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "textures": {
-      "all": "rnt:blocks/road/basalt"
-    }
-  },
   "variants": {
     "normal": {
-      "model": "cube_all"
+      "model": "rnt:models/block/road/basalt"
     }
   }
 }

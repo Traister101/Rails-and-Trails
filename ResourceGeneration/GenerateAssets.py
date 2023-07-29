@@ -47,10 +47,12 @@ def generateLang():
     lang = Lang("en_us")
 
     lang.writeHeader("Items")
-    lang.writeItem("rnt.minecart.steel.name", "Steel Minecart")
+    lang.writeItem("rnt.minecart.steel", "Steel Minecart")
     lang.newLine()
 
+    # Blocks
     lang.writeHeader("Blocks\n")
+    lang.writeTile("rnt.rose_gold_rail", "Rose Gold Rail")
 
     # Roads
     lang.writeComment("Roads")
@@ -68,13 +70,21 @@ def generateLang():
                            f"{rock_type.capitalize()} Road {blockType.capitalize()}")
         lang.newLine()
 
+    # Entities
+    lang.writeEntity("steel_minecart", "Steel Minecart")
+
+    # Config
+    lang.write("config.rnt.road", "Road Config")
+    lang.write("config.rnt.road.move_speed_modifier", "Move Speed Modifier")
+
 
 def main():
     # ROCK STUFF
     for rockType in ROCK_TYPES:
         # Road blocks, Stairs and Slabs
         roadTexture = f"rnt:blocks/road/{rockType}"
-        blockStates.createCubeAll(f"road/{rockType}", roadTexture)
+        models.createCubeAll(f"road/{rockType}", roadTexture)
+        blockStates.createBlockStateSimple(f"road/{rockType}", f"rnt:models/block/road/{rockType}")
         recipes.createShaped(f"road/{rockType}", ["GSG", "SMS", "GSG"],
                              {"G": Ingredient(ore="gravel"), "S": Ingredient(itemID=f"tfc:brick/{rockType}"),
                               "M": Ingredient(itemID="tfc:mortar")},
@@ -88,6 +98,16 @@ def main():
 
     # Minecart metal types?
     models.createItem("minecart/steel", "rnt:items/minecart/steel")
+    recipes.createShaped("minecart/steel", ["S S", "SSS"], {"S": Ingredient(itemID="tfc:metal/sheet/steel")},
+                         Result("rnt:minecart/steel"))
+    # Vanilla minecart recipe
+    recipes.createShaped("minecraft:minecart", ["S S", "SSS"], {"S": Ingredient(itemID="tfc:metal/sheet/wrought_iron")},
+                         Result("minecraft:minecart"))
+    models.createItem("rose_gold_rail", "rnt:blocks/rose_gold_rail")
+    recipes.createShaped("rail/rose_gold", ["ISI", "GRG", "ISI"],
+                         {"I": Ingredient(itemID="tfc:metal/rod/wrought_iron"),
+                          "G": Ingredient(itemID="tfc:metal/rod/gold"), "S": Ingredient(ore="stickWood"),
+                          "R": Ingredient(itemID="minecraft:redstone")}, Result("rnt:rose_gold_rail", 8))
 
     generateLang()
 

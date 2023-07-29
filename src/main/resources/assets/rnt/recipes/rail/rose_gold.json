@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "ISI",
+    "GRG",
+    "ISI"
+  ],
+  "key": {
+    "I": {
+      "item": "tfc:metal/rod/wrought_iron"
+    },
+    "G": {
+      "item": "tfc:metal/rod/gold"
+    },
+    "S": {
+      "type": "forge:ore_dict",
+      "ore": "stickWood"
+    },
+    "R": {
+      "item": "minecraft:redstone"
+    }
+  },
+  "result": {
+    "item": "rnt:rose_gold_rail",
+    "count": 8
+  }
+}
