@@ -6,14 +6,18 @@
     "version": "${version}",
     "mcversion": "${mcversion}",
     "updateUrl": "",
+    "url": "https://github.com/Traister101/Rails-and-Trails",
     "authorList": [
       "Traister101"
     ],
-    "credits": "",
-    "logoFile": "/assets/tfc/textures/gui/logo.png",
-    "screenshots": [],
-    "dependencies": [
+    "credits": "Necoxus for base TFC rock types road textures",
+    "logoFile": "assets/rnt/textures/gui/logo.png",
+    "requiredMods": [
       "tfc"
+    ],
+    "dependencies": [
+      "tfc",
+      "tfc_rocksplus"
     ]
   }
 ]
