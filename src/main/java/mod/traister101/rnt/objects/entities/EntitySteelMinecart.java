@@ -2,6 +2,10 @@ package mod.traister101.rnt.objects.entities;
 
 import mcp.MethodsReturnNonnullByDefault;
 import mod.traister101.rnt.objects.items.ItemsRNT;
+import net.dries007.tfc.objects.blocks.wood.BlockBarrel;
+import net.dries007.tfc.objects.blocks.wood.BlockChestTFC;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockChest;
 import net.minecraft.block.BlockRailBase;
 import net.minecraft.block.BlockRailBase.EnumRailDirection;
 import net.minecraft.block.BlockRailPowered;
@@ -9,8 +13,11 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityMinecartEmpty;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -71,6 +78,34 @@ public class EntitySteelMinecart extends EntityMinecartEmpty {
 		}
 
 		return new EntitySteelMinecart(world, x + xOffset, y + 0.0625 + yOffset, z + zOffset);
+	}
+
+	@Override
+	public boolean processInitialInteract(final EntityPlayer player, final EnumHand hand) {
+		// Have to be sneaking for our in world container attaching
+		if (!player.isSneaking()) return super.processInitialInteract(player, hand);
+		final ItemStack heldStack = player.getHeldItem(EnumHand.MAIN_HAND);
+
+		// The held stack isn't a block
+		if (!(heldStack.getItem() instanceof ItemBlock)) return super.processInitialInteract(player, hand);
+
+		final ItemBlock itemBlock = (ItemBlock) heldStack.getItem();
+		final Block block = itemBlock.getBlock();
+		if (block instanceof BlockChestTFC) {
+			// Wrong kind of chest
+			if (((BlockChestTFC) block).chestType == BlockChest.Type.TRAP) return super.processInitialInteract(player, hand);
+			// TODO spawn a chest minecart and kill this one
+			setCustomNameTag("Chest Minecart");
+			return true;
+		}
+
+		if (block instanceof BlockBarrel) {
+			// TODO spawn a barrel minecart and kill this one
+			setCustomNameTag("Barrel Minecart");
+			return true;
+		}
+
+		return super.processInitialInteract(player, hand);
 	}
 
 	@Override
@@ -263,7 +298,7 @@ public class EntitySteelMinecart extends EntityMinecartEmpty {
 
 	// This needs to be overridden so our minecart item drops
 	@Override
-	public void killMinecart(DamageSource source) {
+	public void killMinecart(final DamageSource source) {
 		setDead();
 
 		if (world.getGameRules().getBoolean("doEntityDrops")) {
