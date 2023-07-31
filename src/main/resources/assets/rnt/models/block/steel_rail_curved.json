@@ -1,0 +1,6 @@
+{
+    "parent": "block/rail_curved",
+    "textures": {
+        "rail": "rnt:blocks/steel_rail_curved"
+    }
+}
