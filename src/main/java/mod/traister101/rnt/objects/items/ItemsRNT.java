@@ -37,11 +37,12 @@ public final class ItemsRNT {
 	public static void registerItems(final Register<Item> event) {
 
 		final IForgeRegistry<Item> registry = event.getRegistry();
-		Builder<Item> simpleItems = ImmutableList.builder();
+		final Builder<Item> simpleItems = ImmutableList.builder();
 
 		simpleItems.add(register(registry, "minecart/steel", new ItemSteelMinecart(), CreativeTabs.TRANSPORTATION));
 
 		BlocksRNT.getAllNormalItemBlocks().forEach(x -> registerItemBlock(registry, x));
+		BlocksRNT.getAllInventoryItemBlocks().forEach(x -> registerItemBlock(registry, x));
 
 		for (RoadSlab.Half slab : BlocksRNT.getAllSlabBlocks()) {
 			//noinspection DataFlowIssue

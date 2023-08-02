@@ -1,5 +1,6 @@
 package mod.traister101.rnt.client;
 
+import mod.traister101.rnt.objects.blocks.BlockRailIntersection;
 import mod.traister101.rnt.objects.blocks.BlocksRNT;
 import mod.traister101.rnt.objects.blocks.RoadSlab;
 import mod.traister101.rnt.objects.entities.EntitySteelMinecart;
@@ -30,19 +31,24 @@ public final class ClientRegistry {
 	@SubscribeEvent
 	public static void registerModels(final ModelRegistryEvent event) {
 
-		// Item Blocks
-		for (final ItemBlock item : BlocksRNT.getAllNormalItemBlocks())
-			registerItemRenderer(item, 0, "normal");
+		// Item Blocks that use a single model
+		for (final ItemBlock item : BlocksRNT.getAllNormalItemBlocks()) registerItemRenderer(item, 0, "normal");
+
+		// Item Blocks that use an item renderer in the inventory
+		for (final ItemBlock item : BlocksRNT.getAllInventoryItemBlocks()) registerItemRenderer(item, 0, "inventory");
 
 		// Basic items
-		for (final Item item : ItemsRNT.getAllSimpleItems())
-			registerBasicItemRenderer(item);
+		for (final Item item : ItemsRNT.getAllSimpleItems()) registerBasicItemRenderer(item);
 
 		// Ignore the "default" state of our slabs
-		for (RoadSlab.Half slab : BlocksRNT.getAllSlabBlocks()) {
+		for (final RoadSlab.Half slab : BlocksRNT.getAllSlabBlocks()) {
 			ModelLoader.setCustomStateMapper(slab, new StateMap.Builder().ignore(RoadSlab.VARIANT).build());
 			ModelLoader.setCustomStateMapper(slab.doubleSlab, new StateMap.Builder().ignore(RoadSlab.VARIANT).build());
 		}
+
+		// Ignore the shape states for rail intersection
+		ModelLoader.setCustomStateMapper(BlocksRNT.STEEL_RAIL_INTERSECTION,
+				new StateMap.Builder().ignore(BlockRailIntersection.SHAPE).build());
 	}
 
 	@SuppressWarnings("ConstantConditions")
@@ -50,8 +56,9 @@ public final class ClientRegistry {
 		ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName().toString()));
 	}
 
-	@SuppressWarnings({"SameParameterValue", "ConstantConditions"})
+	@SuppressWarnings("SameParameterValue")
 	private static void registerItemRenderer(Item item, int meta, String id) {
+		//noinspection DataFlowIssue
 		ModelLoader.setCustomModelResourceLocation(item, meta, new ModelResourceLocation(item.getRegistryName(), id));
 	}
 }
