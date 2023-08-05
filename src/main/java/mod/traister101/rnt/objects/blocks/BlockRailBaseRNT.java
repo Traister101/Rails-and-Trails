@@ -4,6 +4,7 @@ import net.dries007.tfc.api.capability.size.IItemSize;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
 import net.minecraft.block.BlockRailBase;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
@@ -13,14 +14,16 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public abstract class BlockRailBaseRNT extends BlockRailBase implements IItemSize {
 
 	public BlockRailBaseRNT(boolean isPowered) {
 		super(isPowered);
+		setHardness(0.7F);
+		setSoundType(SoundType.METAL);
 	}
 
 	@Override
@@ -212,13 +215,14 @@ public abstract class BlockRailBaseRNT extends BlockRailBase implements IItemSiz
 			updateConnectedRails(railDirection);
 			state = state.withProperty(block.getShapeProperty(), railDirection);
 
-			if (initialPlacement || world.getBlockState(pos) != state) {
+			if (initialPlacement || world.getBlockState(pos) != state || block instanceof BlockRailIntersection) {
 				world.setBlockState(pos, state);
 
 				for (final BlockPos connectedRail : connectedRails) {
-					final RailRNT rail = findRailAt(connectedRail);
+					final Optional<RailRNT> railOptional = findRailAt(connectedRail);
 
-					if (rail != null) {
+					if (railOptional.isPresent()) {
+						final RailRNT rail = railOptional.get();
 						rail.removeSoftConnections();
 
 						if (rail.canConnectTo(this)) {
@@ -234,43 +238,59 @@ public abstract class BlockRailBaseRNT extends BlockRailBase implements IItemSiz
 		private void updateConnectedRails(final EnumRailDirection railDirection) {
 			connectedRails.clear();
 
+			if (block instanceof BlockRailIntersection) {
+				connectedRails.add(pos.north());
+				connectedRails.add(pos.east());
+				connectedRails.add(pos.south());
+				connectedRails.add(pos.west());
+			}
+
 			switch (railDirection) {
 				case NORTH_SOUTH:
 					connectedRails.add(pos.north());
 					connectedRails.add(pos.south());
 					break;
+
 				case EAST_WEST:
 					connectedRails.add(pos.west());
 					connectedRails.add(pos.east());
 					break;
+
 				case ASCENDING_EAST:
 					connectedRails.add(pos.west());
 					connectedRails.add(pos.east().up());
 					break;
+
 				case ASCENDING_WEST:
 					connectedRails.add(pos.west().up());
 					connectedRails.add(pos.east());
 					break;
+
 				case ASCENDING_NORTH:
 					connectedRails.add(pos.north().up());
 					connectedRails.add(pos.south());
 					break;
+
 				case ASCENDING_SOUTH:
 					connectedRails.add(pos.north());
 					connectedRails.add(pos.south().up());
 					break;
+
 				case SOUTH_EAST:
 					connectedRails.add(pos.east());
 					connectedRails.add(pos.south());
 					break;
+
 				case SOUTH_WEST:
 					connectedRails.add(pos.west());
 					connectedRails.add(pos.south());
 					break;
+
 				case NORTH_WEST:
 					connectedRails.add(pos.west());
 					connectedRails.add(pos.north());
 					break;
+
 				case NORTH_EAST:
 					connectedRails.add(pos.east());
 					connectedRails.add(pos.north());
@@ -279,10 +299,10 @@ public abstract class BlockRailBaseRNT extends BlockRailBase implements IItemSiz
 
 		private void removeSoftConnections() {
 			for (int i = 0; i < connectedRails.size(); ++i) {
-				final RailRNT rail = findRailAt(connectedRails.get(i));
+				final Optional<RailRNT> rail = findRailAt(connectedRails.get(i));
 
-				if (rail != null && rail.isConnectedToRail(this)) {
-					connectedRails.set(i, rail.pos);
+				if (rail.isPresent() && rail.get().isConnectedToRail(this)) {
+					connectedRails.set(i, rail.get().pos);
 					continue;
 				}
 
@@ -295,24 +315,23 @@ public abstract class BlockRailBaseRNT extends BlockRailBase implements IItemSiz
 					pos.up()) || BlockRailBase.isRailBlock(world, pos.down());
 		}
 
-		@Nullable
-		private RailRNT findRailAt(final BlockPos blockPos) {
+		private Optional<RailRNT> findRailAt(final BlockPos blockPos) {
 			final IBlockState blockState = world.getBlockState(blockPos);
 
 			// Found rail at the given location
-			if (BlockRailBase.isRailBlock(blockState)) return new RailRNT(world, blockPos, blockState);
+			if (BlockRailBase.isRailBlock(blockState)) return Optional.of(new RailRNT(world, blockPos, blockState));
 
 			final BlockPos blockPosUp = blockPos.up();
 			final IBlockState blockStateUp = world.getBlockState(blockPosUp);
 			// Found rail one block up
-			if (BlockRailBase.isRailBlock(blockStateUp)) return new RailRNT(world, blockPosUp, blockStateUp);
+			if (BlockRailBase.isRailBlock(blockStateUp)) return Optional.of(new RailRNT(world, blockPosUp, blockStateUp));
 
 			final BlockPos blockPosDown = blockPos.down();
 			final IBlockState blockStateDown = world.getBlockState(blockPosDown);
 			// Found rail one block down
-			if (BlockRailBase.isRailBlock(blockStateDown)) return new RailRNT(world, blockPosDown, blockStateDown);
+			if (BlockRailBase.isRailBlock(blockStateDown)) return Optional.of(new RailRNT(world, blockPosDown, blockStateDown));
 
-			return null;
+			return Optional.empty();
 		}
 
 		private boolean isConnectedToRail(final RailRNT rail) {
@@ -396,18 +415,17 @@ public abstract class BlockRailBaseRNT extends BlockRailBase implements IItemSiz
 			}
 
 			state = state.withProperty(block.getShapeProperty(), railDirection);
-			world.setBlockState(pos, state, 3);
+			world.setBlockState(pos, state);
 		}
 
 		private boolean hasNeighborRail(final BlockPos posIn) {
-			final RailRNT rail = findRailAt(posIn);
+			final Optional<RailRNT> railOptional = findRailAt(posIn);
 
-			if (rail == null) {
-				return false;
-			} else {
-				rail.removeSoftConnections();
-				return rail.canConnectTo(this);
-			}
+			if (!railOptional.isPresent()) return false;
+
+			final RailRNT rail = railOptional.get();
+			rail.removeSoftConnections();
+			return rail.canConnectTo(this);
 		}
 
 		public IBlockState getBlockState() {
