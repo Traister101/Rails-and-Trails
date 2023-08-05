@@ -1,6 +1,6 @@
-@MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-package mod.traister101.rnt.objects.blocks;
+@MethodsReturnNonnullByDefault
+package mod.traister101.rnt.objects.entities;
 
 import mcp.MethodsReturnNonnullByDefault;
 
