@@ -1,9 +1,11 @@
 package mod.traister101.rnt.client;
 
+import mod.traister101.rnt.client.renderer.entity.RenderMinecartChestRNT;
 import mod.traister101.rnt.objects.blocks.BlockRailIntersection;
 import mod.traister101.rnt.objects.blocks.BlocksRNT;
 import mod.traister101.rnt.objects.blocks.RoadSlab;
-import mod.traister101.rnt.objects.entities.EntitySteelMinecart;
+import mod.traister101.rnt.objects.entities.EntityMinecartChestRNT;
+import mod.traister101.rnt.objects.entities.EntityMinecartRideableRNT;
 import mod.traister101.rnt.objects.items.ItemsRNT;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMap;
@@ -25,7 +27,8 @@ import static mod.traister101.rnt.RailsNTrails.MODID;
 public final class ClientRegistry {
 
 	public static void preInit() {
-		RenderingRegistry.registerEntityRenderingHandler(EntitySteelMinecart.class, RenderMinecart<EntitySteelMinecart>::new);
+		RenderingRegistry.registerEntityRenderingHandler(EntityMinecartRideableRNT.class, RenderMinecart<EntityMinecartRideableRNT>::new);
+		RenderingRegistry.registerEntityRenderingHandler(EntityMinecartChestRNT.class, RenderMinecartChestRNT::new);
 	}
 
 	@SubscribeEvent
@@ -56,9 +59,8 @@ public final class ClientRegistry {
 		ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName().toString()));
 	}
 
-	@SuppressWarnings("SameParameterValue")
+	@SuppressWarnings({"SameParameterValue", "ConstantConditions"})
 	private static void registerItemRenderer(Item item, int meta, String id) {
-		//noinspection DataFlowIssue
 		ModelLoader.setCustomModelResourceLocation(item, meta, new ModelResourceLocation(item.getRegistryName(), id));
 	}
 }

@@ -5,6 +5,8 @@ import com.google.common.collect.ImmutableList.Builder;
 import mod.traister101.rnt.objects.blocks.BlocksRNT;
 import mod.traister101.rnt.objects.blocks.RoadSlab;
 import mod.traister101.rnt.objects.blocks.RoadStairs;
+import net.dries007.tfc.api.registries.TFCRegistries;
+import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.objects.items.itemblock.ItemBlockTFC;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -39,13 +41,20 @@ public final class ItemsRNT {
 		final IForgeRegistry<Item> registry = event.getRegistry();
 		final Builder<Item> simpleItems = ImmutableList.builder();
 
-		simpleItems.add(register(registry, "minecart/steel", new ItemSteelMinecart(), CreativeTabs.TRANSPORTATION));
+		simpleItems.add(register(registry, "minecart/steel", new ItemMinecartRideable(), CreativeTabs.TRANSPORTATION));
+
+		for (final Tree wood : TFCRegistries.TREES) {
+			//noinspection ConstantConditions
+			simpleItems.add(register(registry,
+					"minecart/steel/chest/" + wood.getRegistryName().getPath(),
+					new ItemMinecartChest(wood), CreativeTabs.TRANSPORTATION));
+		}
 
 		BlocksRNT.getAllNormalItemBlocks().forEach(x -> registerItemBlock(registry, x));
 		BlocksRNT.getAllInventoryItemBlocks().forEach(x -> registerItemBlock(registry, x));
 
-		for (RoadSlab.Half slab : BlocksRNT.getAllSlabBlocks()) {
-			//noinspection DataFlowIssue
+		for (final RoadSlab.Half slab : BlocksRNT.getAllSlabBlocks()) {
+			//noinspection ConstantConditions
 			simpleItems.add(register(registry,
 					slab.getRegistryName().getPath(),
 					new ItemRoadSlab(slab, slab, slab.doubleSlab),
@@ -53,8 +62,8 @@ public final class ItemsRNT {
 			OreDictionary.registerOre("slab", slab);
 		}
 
-		for (RoadStairs stairs : BlocksRNT.getAllStairsBlocks()) {
-			//noinspection DataFlowIssue
+		for (final RoadStairs stairs : BlocksRNT.getAllStairsBlocks()) {
+			//noinspection ConstantConditions
 			simpleItems.add(register(registry,
 					stairs.getRegistryName().getPath(),
 					new ItemBlockTFC(stairs), CT_DECORATIONS));
@@ -65,13 +74,13 @@ public final class ItemsRNT {
 	}
 
 	@SuppressWarnings("ConstantConditions")
-	private static void registerItemBlock(IForgeRegistry<Item> r, ItemBlock item) {
+	private static void registerItemBlock(final IForgeRegistry<Item> r, final ItemBlock item) {
 		item.setRegistryName(item.getBlock().getRegistryName());
 		item.setCreativeTab(item.getBlock().getCreativeTab());
 		r.register(item);
 	}
 
-	private static <T extends Item> T register(IForgeRegistry<Item> r, String name, T item, CreativeTabs ct) {
+	private static <T extends Item> T register(final IForgeRegistry<Item> r, final String name, final T item, final CreativeTabs ct) {
 		item.setRegistryName(MODID, name);
 		item.setTranslationKey(MODID + "." + name.replace('/', '.'));
 		item.setCreativeTab(ct);

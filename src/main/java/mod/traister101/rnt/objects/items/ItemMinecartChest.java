@@ -1,10 +1,12 @@
 package mod.traister101.rnt.objects.items;
 
-import mcp.MethodsReturnNonnullByDefault;
-import mod.traister101.rnt.objects.entities.EntitySteelMinecart;
+import mod.traister101.rnt.objects.entities.EntityMinecartChestRNT;
+import mod.traister101.rnt.objects.entities.EntityMinecartRNT;
+import mod.traister101.rnt.objects.entities.EntityMinecartRideableRNT;
 import net.dries007.tfc.api.capability.size.IItemSize;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
+import net.dries007.tfc.api.types.Tree;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.block.BlockRailBase;
 import net.minecraft.block.BlockRailBase.EnumRailDirection;
@@ -24,11 +26,14 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.HashMap;
+import java.util.Map;
 
-@ParametersAreNonnullByDefault
-@MethodsReturnNonnullByDefault
-public class ItemSteelMinecart extends Item implements IItemSize {
+public class ItemMinecartChest extends Item implements IItemSize {
+
+	/// Map containing rock road block pairs. Used to better register the roads and slabs
+	private static final Map<Tree, ItemMinecartChest> ITEM_MINECART_CHEST_MAP = new HashMap<>();
+
 	private static final IBehaviorDispenseItem MINECART_DISPENSER_BEHAVIOR = new BehaviorDefaultDispenseItem() {
 		private final BehaviorDefaultDispenseItem behaviourDefaultDispenseItem = new BehaviorDefaultDispenseItem();
 
@@ -38,6 +43,7 @@ public class ItemSteelMinecart extends Item implements IItemSize {
 		public ItemStack dispenseStack(final IBlockSource source, final ItemStack stack) {
 			final EnumFacing facing = source.getBlockState().getValue(BlockDispenser.FACING);
 			final World world = source.getWorld();
+
 			final BlockPos blockPos;
 			final IBlockState blockState;
 			{
@@ -65,10 +71,11 @@ public class ItemSteelMinecart extends Item implements IItemSize {
 				blockPos = deferBlockPos;
 				blockState = deferBlockState;
 			}
+
 			final EnumRailDirection railDirection = ((BlockRailBase) blockState.getBlock()).getRailDirection(world,
 					blockPos, blockState, null);
 
-			final EntitySteelMinecart minecart = EntitySteelMinecart.create(world, blockPos.getX(), blockPos.getY(),
+			final EntityMinecartRNT minecart = EntityMinecartRideableRNT.create(world, blockPos.getX(), blockPos.getY(),
 					blockPos.getZ(), railDirection);
 
 			if (stack.hasDisplayName()) minecart.setCustomNameTag(stack.getDisplayName());
@@ -78,48 +85,60 @@ public class ItemSteelMinecart extends Item implements IItemSize {
 			return stack;
 		}
 	};
+	private final Tree wood;
 
-	public ItemSteelMinecart() {
+	public ItemMinecartChest(final Tree wood) {
+		this.wood = wood;
 		setMaxStackSize(1);
 		setCreativeTab(CreativeTabs.TRANSPORTATION);
 		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(this, MINECART_DISPENSER_BEHAVIOR);
+		ITEM_MINECART_CHEST_MAP.put(wood, this);
+	}
+
+	/**
+	 * Grabs the item chest minecart for the wood type
+	 *
+	 * @param wood Type of wood
+	 *
+	 * @return Item of the associated type
+	 */
+	public static ItemMinecartChest get(final Tree wood) {
+		return ITEM_MINECART_CHEST_MAP.get(wood);
 	}
 
 	@Override
-	public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand,
-			EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public EnumActionResult onItemUse(final EntityPlayer player, final World world, final BlockPos pos, final EnumHand hand,
+			final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
 
-		final IBlockState blockState = worldIn.getBlockState(pos);
+		final IBlockState blockState = world.getBlockState(pos);
 
 		if (!BlockRailBase.isRailBlock(blockState)) return EnumActionResult.FAIL;
 
-		final ItemStack itemstack = player.getHeldItem(hand);
+		final ItemStack itemStack = player.getHeldItem(hand);
 
-		if (!worldIn.isRemote) {
+		if (!world.isRemote) {
 			final EnumRailDirection railDirection = ((BlockRailBase) blockState.getBlock()).getRailDirection(
-					worldIn, pos, blockState, null);
+					world, pos, blockState, null);
 
-			final EntitySteelMinecart minecart = EntitySteelMinecart.create(worldIn, pos.getX(), pos.getY(), pos.getZ(),
-					railDirection);
+			final EntityMinecartRNT minecart = EntityMinecartChestRNT.create(world, pos.getX(), pos.getY(), pos.getZ(),
+					railDirection, wood);
 
-			if (itemstack.hasDisplayName()) minecart.setCustomNameTag(itemstack.getDisplayName());
-
-			worldIn.spawnEntity(minecart);
+			world.spawnEntity(minecart);
 		}
 
-		itemstack.shrink(1);
+		itemStack.shrink(1);
 		return EnumActionResult.SUCCESS;
 	}
 
 	@Nonnull
 	@Override
-	public Size getSize(@Nonnull ItemStack itemStack) {
+	public Size getSize(@Nonnull final ItemStack itemStack) {
 		return Size.LARGE;
 	}
 
 	@Nonnull
 	@Override
-	public Weight getWeight(@Nonnull ItemStack itemStack) {
+	public Weight getWeight(@Nonnull final ItemStack itemStack) {
 		return Weight.VERY_HEAVY;
 	}
 }
