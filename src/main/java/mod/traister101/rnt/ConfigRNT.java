@@ -26,6 +26,7 @@ public final class ConfigRNT {
 	}
 
 	public static final class RoadConfig {
+
 		@Comment("Controls the move speed modifier when on road blocks. This value is directly used so 1.2 is a 20% bonus, like speed 1")
 		@LangKey("config.rnt.road.move_speed_modifier")
 		@SlidingOption()

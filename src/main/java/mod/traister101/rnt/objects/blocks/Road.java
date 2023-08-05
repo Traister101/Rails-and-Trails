@@ -15,11 +15,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.HashMap;
 import java.util.Map;
 
-@ParametersAreNonnullByDefault
 public class Road extends Block implements IItemSize {
 
 	/// Map containing rock road block pairs. Used to better register the roads and slabs
@@ -41,6 +39,7 @@ public class Road extends Block implements IItemSize {
 	 * Returns the road for the given rock type
 	 *
 	 * @param rock type of rock
+	 *
 	 * @return Road instance for the given rock type
 	 */
 	public static Road get(Rock rock) {
@@ -58,13 +57,13 @@ public class Road extends Block implements IItemSize {
 
 	@Nonnull
 	@Override
-	public Size getSize(@Nonnull ItemStack itemStack) {
+	public Size getSize(@Nonnull final ItemStack itemStack) {
 		return Size.SMALL;
 	}
 
 	@Nonnull
 	@Override
-	public Weight getWeight(@Nonnull ItemStack itemStack) {
+	public Weight getWeight(@Nonnull final ItemStack itemStack) {
 		return Weight.LIGHT;
 	}
 }

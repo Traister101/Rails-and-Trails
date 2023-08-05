@@ -1,6 +1,5 @@
 package mod.traister101.rnt.objects.blocks;
 
-import mcp.MethodsReturnNonnullByDefault;
 import net.dries007.tfc.api.types.Rock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSlab;
@@ -16,13 +15,10 @@ import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-@ParametersAreNonnullByDefault
-@MethodsReturnNonnullByDefault
 public abstract class RoadSlab extends BlockSlab {
 
 	public static final PropertyEnum<Variant> VARIANT = PropertyEnum.create("variant", Variant.class);
@@ -46,12 +42,7 @@ public abstract class RoadSlab extends BlockSlab {
 	}
 
 	@Override
-	public void onEntityWalk(final World worldIn, final BlockPos pos, final Entity entityIn) {
-		parentBlock.onEntityWalk(worldIn, pos, entityIn);
-	}
-
-	@Override
-	public String getTranslationKey(int meta) {
+	public String getTranslationKey(final int meta) {
 		return super.getTranslationKey();
 	}
 
@@ -61,51 +52,58 @@ public abstract class RoadSlab extends BlockSlab {
 	}
 
 	@Override
-	public Comparable<?> getTypeForItem(ItemStack stack) {
+	public Comparable<?> getTypeForItem(final ItemStack stack) {
 		return Variant.DEFAULT;
 	}
 
 	@Override
 	@SuppressWarnings("deprecation")
-	public IBlockState getStateFromMeta(int meta) {
+	public IBlockState getStateFromMeta(final int meta) {
 		IBlockState state = this.getDefaultState().withProperty(VARIANT, Variant.DEFAULT);
 
-		if (!this.isDouble())
+		if (!this.isDouble()) {
 			state = state.withProperty(HALF, (meta & 8) == 0 ? BlockSlab.EnumBlockHalf.BOTTOM : BlockSlab.EnumBlockHalf.TOP);
+		}
 
 		return state;
 	}
 
 	@Override
-	public int getMetaFromState(IBlockState state) {
+	public int getMetaFromState(final IBlockState blockState) {
 		int i = 0;
 
-		if (!isDouble() && state.getValue(HALF) == EnumBlockHalf.TOP)
+		if (!isDouble() && blockState.getValue(HALF) == EnumBlockHalf.TOP) {
 			i |= 8;
+		}
 
 		return i;
 	}
 
 	@Override
 	@SuppressWarnings("deprecation")
-	public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos) {
-		return parentBlock.getBlockHardness(blockState, worldIn, pos);
+	public float getBlockHardness(final IBlockState blockState, final World world, final BlockPos blockPos) {
+		return parentBlock.getBlockHardness(blockState, world, blockPos);
 	}
 
 	@Override
-	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+	public Item getItemDropped(final IBlockState blockState, final Random rand, final int fortune) {
 		return Item.getItemFromBlock(halfSlab);
 	}
 
 	@Override
 	@SuppressWarnings("deprecation")
-	public float getExplosionResistance(Entity exploder) {
+	public float getExplosionResistance(final Entity exploder) {
 		return parentBlock.getExplosionResistance(exploder);
 	}
 
 	@Override
+	public void onEntityWalk(final World worldIn, final BlockPos pos, final Entity entityIn) {
+		parentBlock.onEntityWalk(worldIn, pos, entityIn);
+	}
+
+	@Override
 	@SuppressWarnings("deprecation")
-	public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state) {
+	public ItemStack getItem(final World world, final BlockPos blockPos, final IBlockState blockState) {
 		return new ItemStack(halfSlab);
 	}
 
@@ -144,9 +142,10 @@ public abstract class RoadSlab extends BlockSlab {
 		 * Returns the double slab variant for the rock type
 		 *
 		 * @param rock type of this rock
+		 *
 		 * @return Double slab for given rock type
 		 */
-		public static Double get(Rock rock) {
+		public static Double get(final Rock rock) {
 			return ROCK_TABLE.get(rock);
 		}
 

@@ -11,19 +11,20 @@ import net.minecraft.item.ItemStack;
 import javax.annotation.Nonnull;
 
 public class ItemRoadSlab extends ItemSlab implements IItemSize {
+
 	public ItemRoadSlab(Block block, BlockSlab singleSlab, BlockSlab doubleSlab) {
 		super(block, singleSlab, doubleSlab);
 	}
 
 	@Nonnull
 	@Override
-	public Size getSize(@Nonnull ItemStack itemStack) {
+	public Size getSize(@Nonnull final ItemStack itemStack) {
 		return Size.SMALL;
 	}
 
 	@Nonnull
 	@Override
-	public Weight getWeight(@Nonnull ItemStack itemStack) {
+	public Weight getWeight(@Nonnull final ItemStack itemStack) {
 		return Weight.VERY_LIGHT;
 	}
 }
