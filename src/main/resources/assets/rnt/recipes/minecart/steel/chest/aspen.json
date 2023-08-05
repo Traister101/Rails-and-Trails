@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "rnt:minecart/steel"
+    },
+    {
+      "item": "tfc:wood/chest/aspen"
+    }
+  ],
+  "result": {
+    "item": "rnt:minecart/steel/chest/aspen"
+  }
+}

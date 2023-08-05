@@ -1,7 +1,7 @@
 {
   "variants": {
     "normal": {
-      "model": "rnt:models/block/road/chalk"
+      "model": "rnt:road/chalk"
     }
   }
 }

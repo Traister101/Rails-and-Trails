@@ -1,7 +1,7 @@
 {
   "variants": {
     "normal": {
-      "model": "rnt:models/block/road/foidolite"
+      "model": "rnt:road/foidolite"
     }
   }
 }

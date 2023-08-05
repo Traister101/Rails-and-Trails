@@ -1,7 +1,7 @@
 {
   "variants": {
     "normal": {
-      "model": "rnt:models/block/road/rocksalt"
+      "model": "rnt:road/rocksalt"
     }
   }
 }

@@ -42,17 +42,45 @@ ROCK_TYPES: Final[list[str]] = [
     "mylonite"
 ]
 
+WOOD_TYPES: Final[list[str]] = [
+    "acacia",
+    "ash",
+    "aspen",
+    "birch",
+    "blackwood",
+    "chestnut",
+    "douglas_fir",
+    "hickory",
+    "kapok",
+    "maple",
+    "oak",
+    "palm",
+    "pine",
+    "rosewood",
+    "sequoia",
+    "spruce",
+    "sycamore",
+    "white_cedar",
+    "willow"
+]
+
 
 def generateLang():
     lang = Lang("en_us")
 
     lang.writeHeader("Items")
     lang.writeItem("rnt.minecart.steel", "Steel Minecart")
+
+    for wood_type in WOOD_TYPES:
+        lang.writeItem(f"rnt.minecart.steel.chest.{wood_type}", f"Steel Minecart with {wood_type.capitalize()} Chest")
+
     lang.newLine()
 
     # Blocks
     lang.writeHeader("Blocks\n")
     lang.writeTile("rnt.rose_gold_rail", "Rose Gold Rail")
+    lang.writeTile("rnt.steel_rail", "Steel Rail")
+    lang.writeTile("rnt.steel_rail_intersection", "Steel Rail Intersection")
 
     # Roads
     lang.writeComment("Roads")
@@ -72,6 +100,7 @@ def generateLang():
 
     # Entities
     lang.writeEntity("steel_minecart", "Steel Minecart")
+    lang.writeEntity("steel_minecart_chest", "Steel Minecart with Chest")
 
     # Config
     lang.write("config.rnt.road", "Road Config")
@@ -84,7 +113,7 @@ def main():
         # Road blocks, Stairs and Slabs
         roadTexture = f"rnt:blocks/road/{rockType}"
         models.createCubeAll(f"road/{rockType}", roadTexture)
-        blockStates.createBlockStateSimple(f"road/{rockType}", f"rnt:models/block/road/{rockType}")
+        blockStates.createBlockStateSimple(f"road/{rockType}", f"rnt:road/{rockType}")
         recipes.createShaped(f"road/{rockType}", ["GSG", "SMS", "GSG"],
                              {"G": Ingredient(ore="gravel"), "S": Ingredient(itemID=f"tfc:brick/{rockType}"),
                               "M": Ingredient(itemID="tfc:mortar")},
@@ -100,14 +129,24 @@ def main():
     models.createItem("minecart/steel", "rnt:items/minecart/steel")
     recipes.createShaped("minecart/steel", ["S S", "SSS"], {"S": Ingredient(itemID="tfc:metal/sheet/steel")},
                          Result("rnt:minecart/steel"))
+    for wood_type in WOOD_TYPES:
+        models.createItem(f"minecart/steel/chest/{wood_type}", f"rnt:items/minecart/steel/chest{wood_type}")
+        recipes.shapelessRecipe(f"minecart/steel/chest/{wood_type}",
+                                [Ingredient(itemID=f"rnt:minecart/steel"),
+                                 Ingredient(itemID=f"tfc:wood/chest/{wood_type}")],
+                                Result(itemID=f"rnt:minecart/steel/chest/{wood_type}"))
+
     # Vanilla minecart recipe
-    recipes.createShaped("minecraft:minecart", ["S S", "SSS"], {"S": Ingredient(itemID="tfc:metal/sheet/wrought_iron")},
-                         Result("minecraft:minecart"))
+    recipes.createShaped("minecart", ["S S", "SSS"], {"S": Ingredient(itemID="tfc:metal/sheet/wrought_iron")},
+                         Result("minecart"))
     models.createItem("rose_gold_rail", "rnt:blocks/rose_gold_rail")
     recipes.createShaped("rail/rose_gold", ["ISI", "GRG", "ISI"],
                          {"I": Ingredient(itemID="tfc:metal/rod/wrought_iron"),
                           "G": Ingredient(itemID="tfc:metal/rod/gold"), "S": Ingredient(ore="stickWood"),
                           "R": Ingredient(itemID="minecraft:redstone")}, Result("rnt:rose_gold_rail", 8))
+
+    models.createItem("steel_rail", "rnt:blocks/steel_rail")
+    models.createItem("steel_rail_intersection", "rnt:blocks/steel_rail_intersection")
 
     generateLang()
 

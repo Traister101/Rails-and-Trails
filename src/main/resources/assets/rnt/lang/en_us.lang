@@ -1,9 +1,30 @@
 ## Items
 item.rnt.minecart.steel.name=Steel Minecart
+item.rnt.minecart.steel.chest.acacia.name=Steel Minecart with Acacia Chest
+item.rnt.minecart.steel.chest.ash.name=Steel Minecart with Ash Chest
+item.rnt.minecart.steel.chest.aspen.name=Steel Minecart with Aspen Chest
+item.rnt.minecart.steel.chest.birch.name=Steel Minecart with Birch Chest
+item.rnt.minecart.steel.chest.blackwood.name=Steel Minecart with Blackwood Chest
+item.rnt.minecart.steel.chest.chestnut.name=Steel Minecart with Chestnut Chest
+item.rnt.minecart.steel.chest.douglas_fir.name=Steel Minecart with Douglas_fir Chest
+item.rnt.minecart.steel.chest.hickory.name=Steel Minecart with Hickory Chest
+item.rnt.minecart.steel.chest.kapok.name=Steel Minecart with Kapok Chest
+item.rnt.minecart.steel.chest.maple.name=Steel Minecart with Maple Chest
+item.rnt.minecart.steel.chest.oak.name=Steel Minecart with Oak Chest
+item.rnt.minecart.steel.chest.palm.name=Steel Minecart with Palm Chest
+item.rnt.minecart.steel.chest.pine.name=Steel Minecart with Pine Chest
+item.rnt.minecart.steel.chest.rosewood.name=Steel Minecart with Rosewood Chest
+item.rnt.minecart.steel.chest.sequoia.name=Steel Minecart with Sequoia Chest
+item.rnt.minecart.steel.chest.spruce.name=Steel Minecart with Spruce Chest
+item.rnt.minecart.steel.chest.sycamore.name=Steel Minecart with Sycamore Chest
+item.rnt.minecart.steel.chest.white_cedar.name=Steel Minecart with White_cedar Chest
+item.rnt.minecart.steel.chest.willow.name=Steel Minecart with Willow Chest
 
 ## Blocks
 
 tile.rnt.rose_gold_rail.name=Rose Gold Rail
+tile.rnt.steel_rail.name=Steel Rail
+tile.rnt.steel_rail_intersection.name=Steel Rail Intersection
 # Roads
 tile.rnt.road.granite.name=Granite Road
 tile.rnt.road.diorite.name=Diorite Road
@@ -110,5 +131,6 @@ tile.rnt.slab.road.cataclasite.name=Cataclasite Road Slab
 tile.rnt.slab.road.mylonite.name=Mylonite Road Slab
 
 entity.steel_minecart.name=Steel Minecart
+entity.steel_minecart_chest.name=Steel Minecart with Chest
 config.rnt.road=Road Config
 config.rnt.road.move_speed_modifier=Move Speed Modifier

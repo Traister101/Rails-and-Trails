@@ -69,6 +69,6 @@ processResources {
     }
 }
 
-project.tasks.withType(Jar) { jarTask ->
+project.tasks.withType(Jar).configureEach { jarTask ->
     jarTask.appendix = project.minecraft.version
 }

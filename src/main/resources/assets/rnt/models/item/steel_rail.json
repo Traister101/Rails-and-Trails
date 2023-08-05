@@ -1,6 +1,6 @@
 {
-    "parent": "item/generated",
-    "textures": {
-        "layer0": "rnt:blocks/steel_rail"
-    }
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "rnt:blocks/steel_rail"
+  }
 }

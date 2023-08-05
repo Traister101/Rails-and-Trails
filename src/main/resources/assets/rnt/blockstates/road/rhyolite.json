@@ -1,7 +1,7 @@
 {
   "variants": {
     "normal": {
-      "model": "rnt:models/block/road/rhyolite"
+      "model": "rnt:road/rhyolite"
     }
   }
 }
