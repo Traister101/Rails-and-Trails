@@ -16,10 +16,10 @@ import net.minecraftforge.registries.IForgeRegistry;
 
 import java.util.Collection;
 
-import static mod.traister101.rnt.Helper.getNull;
 import static mod.traister101.rnt.RailsNTrails.MODID;
 import static net.dries007.tfc.objects.CreativeTabsTFC.CT_DECORATIONS;
 import static net.dries007.tfc.objects.CreativeTabsTFC.CT_ROCK_BLOCKS;
+import static net.dries007.tfc.util.Helpers.getNull;
 
 @ObjectHolder(MODID)
 @EventBusSubscriber(modid = MODID)
