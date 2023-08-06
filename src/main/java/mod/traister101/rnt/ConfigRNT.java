@@ -18,6 +18,10 @@ public final class ConfigRNT {
 	@LangKey("config.rnt.road")
 	public static final RoadConfig ROAD_CONFIG = new RoadConfig();
 
+	@Comment("Chest Minecart Configs")
+	@LangKey("config.rnt.chest_minecart")
+	public static final ChestMinecartConfig CHEST_MINECART_CONFIG = new ChestMinecartConfig();
+
 	@SubscribeEvent
 	public static void onConfigChangedEvent(final OnConfigChangedEvent event) {
 		if (event.getModID().equals(MODID)) {
@@ -32,5 +36,12 @@ public final class ConfigRNT {
 		@SlidingOption()
 		@RangeDouble(min = 0, max = 10)
 		public double moveSpeedModifier = 1.2;
+	}
+
+	public static final class ChestMinecartConfig {
+
+		@Comment("Controls the drop behavior of minecart chests. When enabled it behaves like in modern MC version dropping the cart item")
+		@LangKey("config.rnt.chest_minecart.drop")
+		public boolean dropAsItem = true;
 	}
 }

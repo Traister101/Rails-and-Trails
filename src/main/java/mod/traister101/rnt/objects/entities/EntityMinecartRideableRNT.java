@@ -1,7 +1,8 @@
 package mod.traister101.rnt.objects.entities;
 
-import net.dries007.tfc.objects.blocks.wood.BlockBarrel;
+import mod.traister101.rnt.objects.types.MinecartMetal;
 import net.dries007.tfc.objects.blocks.wood.BlockChestTFC;
+import net.dries007.tfc.objects.items.itemblock.ItemBlockBarrel;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
 import net.minecraft.block.BlockRailBase.EnumRailDirection;
@@ -19,8 +20,8 @@ public class EntityMinecartRideableRNT extends EntityMinecartRNT {
 		super(worldIn);
 	}
 
-	public EntityMinecartRideableRNT(final World worldIn, final double x, final double y, final double z) {
-		super(worldIn, x, y, z);
+	public EntityMinecartRideableRNT(final World worldIn, final double x, final double y, final double z, final MinecartMetal metal) {
+		super(worldIn, x, y, z, metal);
 	}
 
 
@@ -32,15 +33,16 @@ public class EntityMinecartRideableRNT extends EntityMinecartRNT {
 	 * @param y Y position of the minecart
 	 * @param z Z position of the minecart
 	 * @param railDirection Enum for the rail we are spawning the minecart onto
+	 * @param metal Our metal type
 	 *
 	 * @return A new minecart entity
 	 */
 	public static EntityMinecartRideableRNT create(final World world, final double x, final double y, final double z,
-			final EnumRailDirection railDirection) {
+			final EnumRailDirection railDirection, final MinecartMetal metal) {
 
 		final Vec3d posOffset = getPlacementPosOffset(railDirection);
 
-		return new EntityMinecartRideableRNT(world, x + posOffset.x, y + posOffset.y, z + posOffset.z);
+		return new EntityMinecartRideableRNT(world, x + posOffset.x, y + posOffset.y, z + posOffset.z, metal);
 	}
 
 	@Override
@@ -81,9 +83,8 @@ public class EntityMinecartRideableRNT extends EntityMinecartRNT {
 			return true;
 		}
 
-		if (block instanceof BlockBarrel) {
-			// TODO spawn a barrel minecart and kill this one
-			setCustomNameTag("Barrel Minecart");
+		if (itemBlock instanceof ItemBlockBarrel) {
+//			if (!world.isRemote) world.spawnEntity(new EntityMinecartBarrelRNT(this, heldStack));
 			return true;
 		}
 

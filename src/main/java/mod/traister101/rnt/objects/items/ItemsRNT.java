@@ -5,6 +5,7 @@ import com.google.common.collect.ImmutableList.Builder;
 import mod.traister101.rnt.objects.blocks.BlocksRNT;
 import mod.traister101.rnt.objects.blocks.RoadSlab;
 import mod.traister101.rnt.objects.blocks.RoadStairs;
+import mod.traister101.rnt.objects.types.MinecartMetal;
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.objects.items.itemblock.ItemBlockTFC;
@@ -26,9 +27,12 @@ import static net.dries007.tfc.util.Helpers.getNull;
 @EventBusSubscriber(modid = MODID)
 public final class ItemsRNT {
 
+	@ObjectHolder("minecart/bronze")
+	public static final ItemMinecartRideable BRONZE_MINECART = getNull();
+	@ObjectHolder("minecart/wrought_iron")
+	public static final ItemMinecartRideable WROUGHT_IRON_MINECART = getNull();
 	@ObjectHolder("minecart/steel")
 	public static final Item STEEL_MINECART = getNull();
-
 	private static ImmutableList<Item> allSimpleItems;
 
 	public static ImmutableList<Item> getAllSimpleItems() {
@@ -41,13 +45,13 @@ public final class ItemsRNT {
 		final IForgeRegistry<Item> registry = event.getRegistry();
 		final Builder<Item> simpleItems = ImmutableList.builder();
 
-		simpleItems.add(register(registry, "minecart/steel", new ItemMinecartRideable(), CreativeTabs.TRANSPORTATION));
+		simpleItems.add(register(registry, "minecart/steel", new ItemMinecartRideable(MinecartMetal.STEEL), CreativeTabs.TRANSPORTATION));
 
 		for (final Tree wood : TFCRegistries.TREES) {
 			//noinspection ConstantConditions
 			simpleItems.add(register(registry,
 					"minecart/steel/chest/" + wood.getRegistryName().getPath(),
-					new ItemMinecartChest(wood), CreativeTabs.TRANSPORTATION));
+					new ItemMinecartChest(wood, MinecartMetal.STEEL), CreativeTabs.TRANSPORTATION));
 		}
 
 		BlocksRNT.getAllNormalItemBlocks().forEach(x -> registerItemBlock(registry, x));

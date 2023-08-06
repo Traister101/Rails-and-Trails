@@ -1,7 +1,9 @@
 package mod.traister101.rnt.objects.entities;
 
+import io.netty.buffer.ByteBuf;
 import mod.traister101.rnt.objects.blocks.BlockAcceleratorRail;
 import mod.traister101.rnt.objects.items.ItemsRNT;
+import mod.traister101.rnt.objects.types.MinecartMetal;
 import net.minecraft.block.BlockRailBase;
 import net.minecraft.block.BlockRailBase.EnumRailDirection;
 import net.minecraft.block.state.IBlockState;
@@ -14,18 +16,21 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 
-public abstract class EntityMinecartRNT extends EntityMinecart {
+public abstract class EntityMinecartRNT extends EntityMinecart implements IEntityAdditionalSpawnData {
 
 	private static final int[][][] MATRIX = new int[][][] {{{0, 0, -1}, {0, 0, 1}}, {{-1, 0, 0}, {1, 0, 0}}, {{-1, -1, 0}, {1, 0, 0}}, {{-1, 0, 0}, {1, -1, 0}}, {{0, 0, -1}, {0, -1, 1}}, {{0, -1, -1}, {0, 0, 1}}, {{0, 0, 1}, {1, 0, 0}}, {{0, 0, 1}, {-1, 0, 0}}, {{0, 0, -1}, {-1, 0, 0}}, {{0, 0, -1}, {1, 0, 0}}};
+	protected MinecartMetal metal;
 
 	@SuppressWarnings("unused")
 	public EntityMinecartRNT(World worldIn) {
 		super(worldIn);
 	}
 
-	public EntityMinecartRNT(World worldIn, double x, double y, double z) {
+	public EntityMinecartRNT(World worldIn, double x, double y, double z, final MinecartMetal metal) {
 		super(worldIn, x, y, z);
+		this.metal = metal;
 	}
 
 	public static Vec3d getPlacementPosOffset(final EnumRailDirection railDirection) {
@@ -60,6 +65,10 @@ public abstract class EntityMinecartRNT extends EntityMinecart {
 		}
 
 		return new Vec3d(xOffset, yOffset, zOffset);
+	}
+
+	public MinecartMetal getMetal() {
+		return metal;
 	}
 
 	// This needs to be overridden so our minecart item drops
@@ -297,6 +306,25 @@ public abstract class EntityMinecartRNT extends EntityMinecart {
 
 	@Override
 	public ItemStack getCartItem() {
-		return new ItemStack(ItemsRNT.STEEL_MINECART);
+		switch (metal) {
+			case BRONZE:
+				return new ItemStack(ItemsRNT.BRONZE_MINECART);
+			case WROUGHT_IRON:
+				return new ItemStack(ItemsRNT.WROUGHT_IRON_MINECART);
+			case STEEL:
+				return new ItemStack(ItemsRNT.STEEL_MINECART);
+			default:
+				return ItemStack.EMPTY;
+		}
+	}
+
+	@Override
+	public void writeSpawnData(final ByteBuf buffer) {
+		buffer.writeByte(metal.ordinal());
+	}
+
+	@Override
+	public void readSpawnData(final ByteBuf additionalData) {
+		metal = MinecartMetal.values()[additionalData.readByte()];
 	}
 }

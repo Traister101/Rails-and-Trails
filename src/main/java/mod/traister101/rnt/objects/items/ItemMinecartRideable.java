@@ -2,6 +2,7 @@ package mod.traister101.rnt.objects.items;
 
 import mod.traister101.rnt.objects.entities.EntityMinecartRNT;
 import mod.traister101.rnt.objects.entities.EntityMinecartRideableRNT;
+import mod.traister101.rnt.objects.types.MinecartMetal;
 import net.dries007.tfc.api.capability.size.IItemSize;
 import net.dries007.tfc.api.capability.size.Size;
 import net.dries007.tfc.api.capability.size.Weight;
@@ -67,9 +68,9 @@ public class ItemMinecartRideable extends Item implements IItemSize {
 
 			final EnumRailDirection railDirection = ((BlockRailBase) blockState.getBlock()).getRailDirection(world,
 					blockPos, blockState, null);
-
+			final ItemMinecartRideable item = (ItemMinecartRideable) stack.getItem();
 			final EntityMinecartRNT minecart = EntityMinecartRideableRNT.create(world, blockPos.getX(), blockPos.getY(),
-					blockPos.getZ(), railDirection);
+					blockPos.getZ(), railDirection, item.metal);
 
 			if (stack.hasDisplayName()) minecart.setCustomNameTag(stack.getDisplayName());
 
@@ -78,8 +79,10 @@ public class ItemMinecartRideable extends Item implements IItemSize {
 			return stack;
 		}
 	};
+	public final MinecartMetal metal;
 
-	public ItemMinecartRideable() {
+	public ItemMinecartRideable(final MinecartMetal metal) {
+		this.metal = metal;
 		setMaxStackSize(1);
 		setCreativeTab(CreativeTabs.TRANSPORTATION);
 		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(this, MINECART_DISPENSER_BEHAVIOR);
@@ -100,7 +103,7 @@ public class ItemMinecartRideable extends Item implements IItemSize {
 					world, pos, blockState, null);
 
 			final EntityMinecartRNT minecart = EntityMinecartRideableRNT.create(world, pos.getX(), pos.getY(), pos.getZ(),
-					railDirection);
+					railDirection, metal);
 
 			world.spawnEntity(minecart);
 		}
