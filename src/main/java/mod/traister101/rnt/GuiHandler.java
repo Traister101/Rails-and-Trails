@@ -1,12 +1,17 @@
 package mod.traister101.rnt;
 
+import mod.traister101.rnt.client.gui.GuiBarrelMinecart;
 import mod.traister101.rnt.client.gui.GUIChestMinecart;
+import mod.traister101.rnt.objects.container.ContainerBarrelMinecart;
 import mod.traister101.rnt.objects.container.ContainerChestMinecart;
+import mod.traister101.rnt.objects.entities.EntityMinecartBarrelRNT;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
@@ -23,25 +28,34 @@ public class GuiHandler implements IGuiHandler {
 		player.openGui(RailsNTrails.getInstance(), type.ordinal(), world, entity.getEntityId(), 0, 0);
 	}
 
-	public static void openGui(final World world, final EntityPlayer player, final GuiType type) {
-		player.openGui(RailsNTrails.getInstance(), type.ordinal(), world, 0, 0, 0);
-	}
-
 	@Nullable
 	@Override
 	public Container getServerGuiElement(final int ID, final EntityPlayer player, final World world, final int x, final int y,
 			final int z) {
+
+		// We store entity ID in the x variable
+		final Entity entity = world.getEntityByID(x);
+		// If it's null we should just blow up
+		assert entity != null;
+
 		switch (GuiType.valueOf(ID)) {
-			case CHEST_MINECART:
-				// We store entity ID in the x variable
-				final Entity entity = world.getEntityByID(x);
-				// If it's null we should just blow up
-				assert entity != null;
+			case CHEST_MINECART: {
 				final IItemHandler itemHandler = entity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
 				if (itemHandler == null) return null;
 
 				return new ContainerChestMinecart(player.inventory, itemHandler);
-			case BARREL_MINECART:
+			}
+			case BARREL_MINECART: {
+				final IItemHandler itemHandler = entity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+				if (itemHandler == null) return null;
+
+				final IFluidHandler fluidHandler = entity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
+				if (fluidHandler == null) return null;
+
+				if (!(entity instanceof EntityMinecartBarrelRNT)) return null;
+
+				return new ContainerBarrelMinecart(player.inventory, itemHandler, fluidHandler, (EntityMinecartBarrelRNT) entity);
+			}
 			default:
 				return null;
 		}
@@ -57,7 +71,14 @@ public class GuiHandler implements IGuiHandler {
 
 			case CHEST_MINECART:
 				return new GUIChestMinecart(container);
-			case BARREL_MINECART:
+			case BARREL_MINECART: {
+				// We store entity ID in the x variable
+				final Entity entity = world.getEntityByID(x);
+				assert entity != null;
+				if (!(entity instanceof EntityMinecartBarrelRNT)) return null;
+
+				return new GuiBarrelMinecart(container, (EntityMinecartBarrelRNT) entity);
+			}
 			default:
 				return null;
 		}
