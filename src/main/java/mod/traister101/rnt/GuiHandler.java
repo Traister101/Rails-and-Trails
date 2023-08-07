@@ -1,7 +1,7 @@
 package mod.traister101.rnt;
 
 import mod.traister101.rnt.client.gui.GuiBarrelMinecart;
-import mod.traister101.rnt.client.gui.GUIChestMinecart;
+import mod.traister101.rnt.client.gui.GuiChestMinecart;
 import mod.traister101.rnt.objects.container.ContainerBarrelMinecart;
 import mod.traister101.rnt.objects.container.ContainerChestMinecart;
 import mod.traister101.rnt.objects.entities.EntityMinecartBarrelRNT;
@@ -70,7 +70,7 @@ public class GuiHandler implements IGuiHandler {
 		switch (GuiType.valueOf(ID)) {
 
 			case CHEST_MINECART:
-				return new GUIChestMinecart(container);
+				return new GuiChestMinecart(container);
 			case BARREL_MINECART: {
 				// We store entity ID in the x variable
 				final Entity entity = world.getEntityByID(x);

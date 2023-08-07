@@ -8,12 +8,12 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class GUIChestMinecart extends GuiContainer {
+public class GuiChestMinecart extends GuiContainer {
 
 	private static final ResourceLocation CHEST_GUI_TEXTURE = new ResourceLocation("textures/gui/container/generic_54.png");
 	private static final int inventoryRows = 2;
 
-	public GUIChestMinecart(final Container inventorySlotsIn) {
+	public GuiChestMinecart(final Container inventorySlotsIn) {
 		super(inventorySlotsIn);
 		this.allowUserInput = false;
 		this.ySize = 114 + inventoryRows * 18;
