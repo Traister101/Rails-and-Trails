@@ -102,6 +102,46 @@ public class EntityMinecartChestRNT extends EntityMinecartRNT {
 	}
 
 	@Override
+	protected void readEntityFromNBT(final NBTTagCompound compound) {
+		super.readEntityFromNBT(compound);
+
+		// Store the wood type as a byte, there probably won't ever be more than 255 types of wood
+		wood = woods[compound.getByte("WoodType")];
+
+		if (compound.hasKey("LootTable")) {
+			lootTable = new ResourceLocation(compound.getString("LootTable"));
+			lootTableSeed = compound.getLong("LootTableSeed");
+			return;
+		}
+
+		minecartContents.deserializeNBT(compound.getCompoundTag("Container"));
+	}
+
+	@Override
+	protected void writeEntityToNBT(final NBTTagCompound compound) {
+		super.writeEntityToNBT(compound);
+
+		// Write our wood type to NBT as a byte
+		for (byte i = 0; i < woods.length; i++) {
+			if (wood == woods[i]) {
+				compound.setByte("WoodType", i);
+				break;
+			}
+		}
+
+		if (lootTable != null) {
+			compound.setString("LootTable", lootTable.toString());
+
+			if (lootTableSeed != 0L) {
+				compound.setLong("LootTableSeed", lootTableSeed);
+			}
+			return;
+		}
+
+		compound.setTag("Container", minecartContents.serializeNBT());
+	}
+
+	@Override
 	public void writeSpawnData(final ByteBuf buffer) {
 		super.writeSpawnData(buffer);
 		// Store the wood type as a byte, there probably won't ever be more than 255 types of wood
@@ -150,46 +190,6 @@ public class EntityMinecartChestRNT extends EntityMinecartRNT {
 			return (T) minecartContents;
 		}
 		return super.getCapability(capability, facing);
-	}
-
-	@Override
-	protected void readEntityFromNBT(final NBTTagCompound compound) {
-		super.readEntityFromNBT(compound);
-
-		// Store the wood type as a byte, there probably won't ever be more than 255 types of wood
-		wood = woods[compound.getByte("WoodType")];
-
-		if (compound.hasKey("LootTable")) {
-			lootTable = new ResourceLocation(compound.getString("LootTable"));
-			lootTableSeed = compound.getLong("LootTableSeed");
-			return;
-		}
-
-		minecartContents.deserializeNBT(compound.getCompoundTag("Container"));
-	}
-
-	@Override
-	protected void writeEntityToNBT(final NBTTagCompound compound) {
-		super.writeEntityToNBT(compound);
-
-		// Write our wood type to NBT as a byte
-		for (byte i = 0; i < woods.length; i++) {
-			if (wood == woods[i]) {
-				compound.setByte("WoodType", i);
-				break;
-			}
-		}
-
-		if (lootTable != null) {
-			compound.setString("LootTable", lootTable.toString());
-
-			if (lootTableSeed != 0L) {
-				compound.setLong("LootTableSeed", lootTableSeed);
-			}
-			return;
-		}
-
-		compound.setTag("Container", minecartContents.serializeNBT());
 	}
 
 	@Override

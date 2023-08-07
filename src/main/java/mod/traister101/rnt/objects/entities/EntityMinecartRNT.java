@@ -68,11 +68,8 @@ public abstract class EntityMinecartRNT extends EntityMinecart implements IEntit
 		return new Vec3d(xOffset, yOffset, zOffset);
 	}
 
-	public MinecartMetal getMetal() {
-		return metal;
-	}
-
 	// This needs to be overridden so our minecart item drops
+
 	@Override
 	public void killMinecart(final DamageSource source) {
 		setDead();
@@ -339,5 +336,9 @@ public abstract class EntityMinecartRNT extends EntityMinecart implements IEntit
 	@Override
 	public void readSpawnData(final ByteBuf additionalData) {
 		metal = MinecartMetal.values()[additionalData.readByte()];
+	}
+
+	public MinecartMetal getMetal() {
+		return metal;
 	}
 }
