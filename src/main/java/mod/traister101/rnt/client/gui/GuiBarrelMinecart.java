@@ -99,7 +99,7 @@ public class GuiBarrelMinecart extends GuiContainer {
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-		String name = I18n.format(translationKey + ".name");
+		final String name = I18n.format(translationKey);
 		fontRenderer.drawString(name, xSize / 2 - fontRenderer.getStringWidth(name) / 2, 6, 0x404040);
 
 		if (barrelCart.isSealed()) {

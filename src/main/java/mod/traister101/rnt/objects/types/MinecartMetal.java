@@ -4,4 +4,9 @@ public enum MinecartMetal {
 	BRONZE,
 	WROUGHT_IRON,
 	STEEL;
+
+	@Override
+	public String toString() {
+		return super.toString().toLowerCase();
+	}
 }

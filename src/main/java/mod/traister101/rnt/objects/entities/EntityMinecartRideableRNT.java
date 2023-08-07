@@ -6,6 +6,7 @@ import net.dries007.tfc.objects.items.itemblock.ItemBlockBarrel;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
 import net.minecraft.block.BlockRailBase.EnumRailDirection;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -23,7 +24,6 @@ public class EntityMinecartRideableRNT extends EntityMinecartRNT {
 	public EntityMinecartRideableRNT(final World worldIn, final double x, final double y, final double z, final MinecartMetal metal) {
 		super(worldIn, x, y, z, metal);
 	}
-
 
 	/**
 	 * Helper that handles the slightly unintuitive minecart placement on rails
@@ -43,6 +43,13 @@ public class EntityMinecartRideableRNT extends EntityMinecartRNT {
 		final Vec3d posOffset = getPlacementPosOffset(railDirection);
 
 		return new EntityMinecartRideableRNT(world, x + posOffset.x, y + posOffset.y, z + posOffset.z, metal);
+	}
+
+	@Override
+	public String getName() {
+		if (hasCustomName()) return getCustomNameTag();
+
+		return I18n.format("entity." + EntitiesRNT.MINECART_RIDEABLE + "." + metal + ".name");
 	}
 
 	@Override

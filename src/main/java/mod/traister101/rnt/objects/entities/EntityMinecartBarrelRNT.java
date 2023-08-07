@@ -9,16 +9,17 @@ import net.dries007.tfc.ConfigTFC;
 import net.dries007.tfc.api.recipes.barrel.BarrelRecipe;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.wood.BlockBarrel;
+import net.dries007.tfc.objects.items.itemblock.ItemBlockBarrel;
 import net.dries007.tfc.objects.items.itemblock.ItemBlockBarrel.ItemBarrelFluidHandler;
 import net.dries007.tfc.util.FluidTransferHelper;
 import net.dries007.tfc.util.calendar.CalendarTFC;
 import net.dries007.tfc.util.calendar.ICalendarFormatted;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.InventoryHelper;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -89,7 +90,7 @@ public class EntityMinecartBarrelRNT extends EntityMinecartRNT {
 		this.motionX = otherCart.motionX;
 		this.motionY = otherCart.motionY;
 		this.motionZ = otherCart.motionZ;
-		this.heldBarrel = (BlockBarrel) ((ItemBlock) barrelItemStack.getItem()).getBlock();
+		this.heldBarrel = (BlockBarrel) ((ItemBlockBarrel) barrelItemStack.getItem()).getBlock();
 		this.blockState = heldBarrel.getDefaultState();
 
 		loadFromItemStack(barrelItemStack);
@@ -213,7 +214,11 @@ public class EntityMinecartBarrelRNT extends EntityMinecartRNT {
 	public void readSpawnData(final ByteBuf additionalData) {
 		super.readSpawnData(additionalData);
 		heldBarrel = barrels.get(additionalData.readByte());
-		translationKey = heldBarrel.getTranslationKey();
+
+		// We want just the wood name
+		final String wood = heldBarrel.getTranslationKey().split("barrel.")[1];
+		translationKey = "entity." + EntitiesRNT.MINECART_BARREL + "." + metal + "." + wood + ".name";
+
 		sealed = additionalData.readBoolean();
 		blockState = heldBarrel.getDefaultState().withProperty(BlockBarrel.SEALED, sealed);
 		tank.readFromNBT(ByteBufUtils.readTag(additionalData));
@@ -338,6 +343,13 @@ public class EntityMinecartBarrelRNT extends EntityMinecartRNT {
 	}
 
 	@Override
+	public String getName() {
+		if (hasCustomName()) return getCustomNameTag();
+
+		return I18n.format(translationKey);
+	}
+
+	@Override
 	public boolean hasCapability(final Capability<?> capability, @Nullable final EnumFacing facing) {
 		return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
 	}
@@ -398,6 +410,7 @@ public class EntityMinecartBarrelRNT extends EntityMinecartRNT {
 		assert fluidHandler != null;
 
 		FluidUtil.interactWithFluidHandler(player, hand, tank);
+		player.swingArm(EnumHand.MAIN_HAND);
 		markForSync();
 
 		return true;
@@ -469,6 +482,6 @@ public class EntityMinecartBarrelRNT extends EntityMinecartRNT {
 
 	@SideOnly(Side.CLIENT)
 	public String getBarrelTranslationKey() {
-		return translationKey;
+		return heldBarrel.getTranslationKey() + ".name";
 	}
 }

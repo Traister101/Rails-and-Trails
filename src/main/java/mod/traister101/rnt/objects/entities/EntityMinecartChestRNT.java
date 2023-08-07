@@ -12,6 +12,7 @@ import net.dries007.tfc.api.types.Tree;
 import net.dries007.tfc.objects.blocks.wood.BlockChestTFC;
 import net.minecraft.block.BlockRailBase.EnumRailDirection;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -164,6 +165,14 @@ public class EntityMinecartChestRNT extends EntityMinecartRNT {
 	@Override
 	public void setDropItemsWhenDead(final boolean dropWhenDead) {
 		dropContentsWhenDead = dropWhenDead;
+	}
+
+	@Override
+	public String getName() {
+		if (hasCustomName()) return getCustomNameTag();
+
+		//noinspection DataFlowIssue
+		return I18n.format("entity." + EntitiesRNT.MINECART_CHEST + "." + metal + "." + wood.getRegistryName().getPath() + ".name");
 	}
 
 	@Nullable

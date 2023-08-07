@@ -16,12 +16,15 @@ import static mod.traister101.rnt.RailsNTrails.MODID;
 @EventBusSubscriber(modid = MODID)
 public final class EntitiesRNT {
 
+	public static final String MINECART_RIDEABLE = "minecart_rideable_rnt";
+	public static final String MINECART_CHEST = "minecart_chest_rnt";
+	public static final String MINECART_BARREL = "minecart_barrel_rnt";
 	private static int id = 1; // don't use id 0, it's easier to debug if something goes wrong
 
 	public static void preInit() {
-		registerMinecart("steel_minecart", EntityMinecartRideableRNT.class);
-		registerMinecart("steel_minecart_chest", EntityMinecartChestRNT.class);
-		registerMinecart("steel_minecart_barrel", EntityMinecartBarrelRNT.class);
+		registerMinecart(MINECART_RIDEABLE, EntityMinecartRideableRNT.class);
+		registerMinecart(MINECART_CHEST, EntityMinecartChestRNT.class);
+		registerMinecart(MINECART_BARREL, EntityMinecartBarrelRNT.class);
 	}
 
 	@SuppressWarnings("SameParameterValue")
