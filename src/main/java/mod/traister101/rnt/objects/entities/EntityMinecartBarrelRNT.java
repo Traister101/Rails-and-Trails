@@ -93,7 +93,7 @@ public class EntityMinecartBarrelRNT extends EntityMinecartRNT {
 		this.heldBarrel = (BlockBarrel) ((ItemBlockBarrel) barrelItemStack.getItem()).getBlock();
 		this.blockState = heldBarrel.getDefaultState();
 
-		loadFromItemStack(barrelItemStack);
+		loadFromBarrelStack(barrelItemStack);
 
 		// Consume other cart
 		otherCart.setDropItemsWhenDead(false);
@@ -108,8 +108,16 @@ public class EntityMinecartBarrelRNT extends EntityMinecartRNT {
 
 		super.killMinecart(source);
 		final ItemStack itemStack = new ItemStack(heldBarrel);
-		saveToItemStack(itemStack);
+		if (sealed) {
+			saveToBarrelStack(itemStack);
+			entityDropItem(itemStack, 0);
+			return;
+		}
+
 		entityDropItem(itemStack, 0);
+		InventoryHelper.spawnItemStack(world, posX, posY, posZ, inventory.getStackInSlot(0));
+		InventoryHelper.spawnItemStack(world, posX, posY, posZ, inventory.getStackInSlot(1));
+		InventoryHelper.spawnItemStack(world, posX, posY, posZ, inventory.getStackInSlot(2));
 	}
 
 	@Override
@@ -282,7 +290,7 @@ public class EntityMinecartBarrelRNT extends EntityMinecartRNT {
 	 *
 	 * @param itemStack Item Stack we should save to
 	 */
-	public void saveToItemStack(final ItemStack itemStack) {
+	public void saveToBarrelStack(final ItemStack itemStack) {
 		final IFluidHandler barrelCap = itemStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
 		if (barrelCap instanceof ItemBarrelFluidHandler) {
 			NBTTagCompound inventoryTag = null;
@@ -315,7 +323,7 @@ public class EntityMinecartBarrelRNT extends EntityMinecartRNT {
 	 *
 	 * @param itemStack Item Stack we should load from
 	 */
-	private void loadFromItemStack(final ItemStack itemStack) {
+	private void loadFromBarrelStack(final ItemStack itemStack) {
 		final IFluidHandler barrelCap = itemStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
 		if (barrelCap instanceof ItemBarrelFluidHandler) {
 			final ItemBarrelFluidHandler barrelHandler = (ItemBarrelFluidHandler) barrelCap;
