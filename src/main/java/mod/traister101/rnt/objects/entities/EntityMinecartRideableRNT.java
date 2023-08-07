@@ -85,6 +85,8 @@ public class EntityMinecartRideableRNT extends EntityMinecartRNT {
 
 		if (itemBlock instanceof ItemBlockBarrel) {
 			if (!world.isRemote) world.spawnEntity(new EntityMinecartBarrelRNT(this, heldStack));
+
+			heldStack.shrink(1);
 			return true;
 		}
 
