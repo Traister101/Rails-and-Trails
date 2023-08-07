@@ -31,11 +31,17 @@ public class BarrelMinecartHandler extends ItemStackHandler {
 	@Nonnull
 	@Override
 	public ItemStack extractItem(final int slot, final int amount, final boolean simulate) {
+		// Can't extract anything if our cart is sealed
+		if ((barrelCart.isSealed())) return ItemStack.EMPTY;
+
 		return super.extractItem(slot, amount, simulate);
 	}
 
 	@Override
 	public boolean isItemValid(final int slot, @Nonnull final ItemStack stack) {
+		// No items are valid if our cart is sealed
+		if (barrelCart.isSealed()) return false;
+
 		switch (slot) {
 			case SLOT_FLUID_CONTAINER_IN:
 				return stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);

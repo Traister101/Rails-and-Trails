@@ -18,7 +18,6 @@ import static net.dries007.tfc.objects.te.TEBarrel.*;
 
 public class ContainerBarrelMinecart extends Container implements IButtonHandler {
 
-
 	private final IFluidHandler fluidTank;
 	private final EntityMinecartBarrelRNT barrelCart;
 
@@ -74,7 +73,8 @@ public class ContainerBarrelMinecart extends Container implements IButtonHandler
 	}
 
 	@Override
-	public void onButtonPress(final int i, @Nullable final NBTTagCompound nbtTagCompound) {
-		barrelCart.onSeal();
+	public void onButtonPress(final int buttonID, @Nullable final NBTTagCompound nbtTagCompound) {
+		// buttonID should always be 0 since we only add one button
+		if (!barrelCart.world.isRemote) barrelCart.toggleSeal();
 	}
 }

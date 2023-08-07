@@ -2,9 +2,11 @@ package mod.traister101.rnt.client.gui;
 
 import mod.traister101.rnt.client.button.GuiBarrelMinecartButtonSeal;
 import mod.traister101.rnt.objects.entities.EntityMinecartBarrelRNT;
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.api.recipes.barrel.BarrelRecipe;
 import net.dries007.tfc.client.FluidSpriteCache;
 import net.dries007.tfc.client.button.IButtonTooltip;
+import net.dries007.tfc.network.PacketGuiButton;
 import net.dries007.tfc.util.Helpers;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
@@ -23,6 +25,8 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import org.lwjgl.opengl.GL11;
@@ -34,6 +38,7 @@ import java.util.List;
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 import static net.dries007.tfc.client.gui.GuiBarrel.BARREL_BACKGROUND;
 
+@SideOnly(Side.CLIENT)
 public class GuiBarrelMinecart extends GuiContainer {
 
 	private final EntityMinecartBarrelRNT barrelCart;
@@ -206,7 +211,8 @@ public class GuiBarrelMinecart extends GuiContainer {
 
 	@Override
 	protected void actionPerformed(GuiButton button) throws IOException {
-//		TerraFirmaCraft.getNetwork().sendToServer(new PacketGuiButton(button.id));
-//		super.actionPerformed(button);
+		TerraFirmaCraft.getNetwork().sendToServer(new PacketGuiButton(button.id));
+		barrelCart.toggleSeal();
+		super.actionPerformed(button);
 	}
 }

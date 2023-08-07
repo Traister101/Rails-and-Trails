@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 import static net.dries007.tfc.objects.te.TEBarrel.BARREL_MAX_FLUID_TEMPERATURE;
 
-public class MinecartBarrelFluidTank extends FluidTank {
+public class BarrelMinecartFluidTank extends FluidTank {
 
 	private final Set<Fluid> whitelist = Arrays.stream(ConfigTFC.Devices.BARREL.fluidWhitelist)
 			.map(FluidRegistry::getFluid)
@@ -26,7 +26,7 @@ public class MinecartBarrelFluidTank extends FluidTank {
 	private final EntityMinecartBarrelRNT barrelCart;
 
 
-	public MinecartBarrelFluidTank(final EntityMinecartBarrelRNT barrelCart) {
+	public BarrelMinecartFluidTank(final EntityMinecartBarrelRNT barrelCart) {
 		super(Devices.BARREL.tank);
 		this.barrelCart = barrelCart;
 	}
@@ -43,8 +43,10 @@ public class MinecartBarrelFluidTank extends FluidTank {
 	}
 
 	@Override
-	public boolean canFillFluidType(final FluidStack fluidStack) {
+	public boolean canFillFluidType(final @Nullable FluidStack fluidStack) {
 		if (barrelCart.isSealed()) return false;
+
+		if (fluidStack == null) return false;
 
 		final Fluid fluidType = fluidStack.getFluid();
 
