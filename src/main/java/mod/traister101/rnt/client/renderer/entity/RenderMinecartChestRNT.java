@@ -8,12 +8,15 @@ import net.minecraft.client.model.ModelChest;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
+@SideOnly(Side.CLIENT)
 public class RenderMinecartChestRNT extends RenderMinecartRNT<EntityMinecartChestRNT> {
 
 	/**

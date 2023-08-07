@@ -6,11 +6,14 @@ import net.dries007.tfc.client.button.IButtonTooltip;
 import net.dries007.tfc.client.gui.GuiBarrel;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
+@SideOnly(Side.CLIENT)
 public class GuiBarrelMinecartButtonSeal extends GuiButtonTFC implements IButtonTooltip {
 
 	private final EntityMinecartBarrelRNT barrelCart;
