@@ -1,8 +1,8 @@
 package mod.traister101.rnt.objects.container;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
@@ -10,7 +10,7 @@ import net.minecraftforge.items.SlotItemHandler;
 
 public class ContainerChestMinecart extends Container {
 
-	public ContainerChestMinecart(final IInventory playerInventory, final IItemHandler itemHandler) {
+	public ContainerChestMinecart(final InventoryPlayer playerInventory, final IItemHandler itemHandler) {
 		final int numRows = itemHandler.getSlots() / 9;
 		final int i = (numRows - 4) * 18;
 
