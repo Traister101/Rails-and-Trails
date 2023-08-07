@@ -47,12 +47,24 @@ public class RenderMinecartChestRNT extends RenderMinecartRNT<EntityMinecartChes
 
 	@Override
 	protected void renderCartContents(final EntityMinecartChestRNT cart, final float partialTicks, final IBlockState blockState) {
+		GlStateManager.enableDepth();
+		GlStateManager.depthFunc(515);
+		GlStateManager.depthMask(true);
+
 		bindTexture(CHEST_TEXTURES.get((cart.getWood())));
+
+		GlStateManager.pushMatrix();
+		GlStateManager.enableRescaleNormal();
 
 		GlStateManager.scale(1, -1, -1);
 		GlStateManager.translate(1, -1.1, 0);
 		GlStateManager.rotate(270, 0, 1, 0);
-
+		
+		final float brightness = cart.getBrightness();
+		GlStateManager.color(brightness, brightness, brightness);
 		simpleChest.renderAll();
+
+		GlStateManager.disableRescaleNormal();
+		GlStateManager.popMatrix();
 	}
 }

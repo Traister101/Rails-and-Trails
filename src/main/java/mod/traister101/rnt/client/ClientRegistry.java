@@ -1,5 +1,6 @@
 package mod.traister101.rnt.client;
 
+import mod.traister101.rnt.client.renderer.entity.RenderMinecartBarrelRNT;
 import mod.traister101.rnt.client.renderer.entity.RenderMinecartChestRNT;
 import mod.traister101.rnt.client.renderer.entity.RenderMinecartRNT;
 import mod.traister101.rnt.objects.blocks.BlockRailIntersection;
@@ -31,7 +32,7 @@ public final class ClientRegistry {
 		RenderingRegistry.registerEntityRenderingHandler(EntityMinecartRideableRNT.class,
 				RenderMinecartRNT<EntityMinecartRideableRNT>::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntityMinecartChestRNT.class, RenderMinecartChestRNT::new);
-		RenderingRegistry.registerEntityRenderingHandler(EntityMinecartBarrelRNT.class, RenderMinecartRNT<EntityMinecartBarrelRNT>::new);
+		RenderingRegistry.registerEntityRenderingHandler(EntityMinecartBarrelRNT.class, RenderMinecartBarrelRNT::new);
 	}
 
 	@SubscribeEvent
