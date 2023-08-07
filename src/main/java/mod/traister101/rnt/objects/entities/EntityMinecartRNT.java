@@ -11,6 +11,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -302,6 +303,18 @@ public abstract class EntityMinecartRNT extends EntityMinecart implements IEntit
 				}
 			}
 		}
+	}
+
+	@Override
+	protected void readEntityFromNBT(final NBTTagCompound compound) {
+		super.readEntityFromNBT(compound);
+		metal = MinecartMetal.values()[compound.getByte("Metal")];
+	}
+
+	@Override
+	protected void writeEntityToNBT(final NBTTagCompound compound) {
+		super.writeEntityToNBT(compound);
+		compound.setByte("Metal", (byte) metal.ordinal());
 	}
 
 	@Override

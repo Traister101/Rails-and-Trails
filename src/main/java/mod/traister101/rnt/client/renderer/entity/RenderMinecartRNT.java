@@ -21,7 +21,10 @@ import javax.annotation.Nullable;
 @SideOnly(Side.CLIENT)
 public class RenderMinecartRNT<T extends EntityMinecartRNT> extends Render<T> {
 
-	private static final ResourceLocation MINECART_TEXTURES = new ResourceLocation("textures/entity/minecart.png");
+	public static final ResourceLocation BRONZE_MINECART = new ResourceLocation("rnt", "textures/entity/minecart/bronze.png");
+	public static final ResourceLocation WROUGHT_IRON_MINECART = new ResourceLocation("rnt", "textures/entity/minecart/wrought_iron.png");
+	public static final ResourceLocation STEEL_MINECART = new ResourceLocation("rnt", "textures/entity/minecart/steel.png");
+	private static final ResourceLocation VANILLA_MINECART = new ResourceLocation("textures/entity/minecart.png");
 	/**
 	 * instance of ModelMinecart for rendering
 	 */
@@ -181,7 +184,16 @@ public class RenderMinecartRNT<T extends EntityMinecartRNT> extends Render<T> {
 	@Nullable
 	@Override
 	protected ResourceLocation getEntityTexture(final T entity) {
-		return MINECART_TEXTURES;
+		switch (entity.getMetal()) {
+			case BRONZE:
+				return BRONZE_MINECART;
+			case WROUGHT_IRON:
+				return WROUGHT_IRON_MINECART;
+			case STEEL:
+				return STEEL_MINECART;
+			default:
+				return VANILLA_MINECART;
+		}
 	}
 
 	protected void renderCartContents(final T cart, final float partialTicks, final IBlockState blockState) {

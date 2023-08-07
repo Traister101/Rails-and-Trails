@@ -24,12 +24,11 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.ITeleporter;
-import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import javax.annotation.Nullable;
 
-public class EntityMinecartChestRNT extends EntityMinecartRNT implements IEntityAdditionalSpawnData {
+public class EntityMinecartChestRNT extends EntityMinecartRNT {
 
 	private static final Tree[] woods = TFCRegistries.TREES.getValuesCollection().toArray(new Tree[] {});
 

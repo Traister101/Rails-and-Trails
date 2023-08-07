@@ -3,7 +3,6 @@ package mod.traister101.rnt.client.renderer.entity;
 import mod.traister101.rnt.objects.entities.EntityMinecartChestRNT;
 import net.dries007.tfc.api.registries.TFCRegistries;
 import net.dries007.tfc.api.types.Tree;
-import net.dries007.tfc.objects.blocks.wood.BlockChestTFC;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.model.ModelChest;
 import net.minecraft.client.renderer.GlStateManager;
@@ -17,6 +16,9 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public class RenderMinecartChestRNT extends RenderMinecartRNT<EntityMinecartChestRNT> {
 
+	/**
+	 * Map of chest textures because they have a custom renderer which doesn't work by default
+	 */
 	private static final Map<Tree, ResourceLocation> CHEST_TEXTURES = new HashMap<>();
 
 	static {
@@ -42,7 +44,7 @@ public class RenderMinecartChestRNT extends RenderMinecartRNT<EntityMinecartChes
 
 	@Override
 	protected void renderCartContents(final EntityMinecartChestRNT cart, final float partialTicks, final IBlockState blockState) {
-		bindTexture(CHEST_TEXTURES.get(((BlockChestTFC) blockState.getBlock()).wood));
+		bindTexture(CHEST_TEXTURES.get((cart.getWood())));
 
 		GlStateManager.scale(1, -1, -1);
 		GlStateManager.translate(1, -1.1, 0);
