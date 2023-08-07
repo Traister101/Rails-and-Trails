@@ -27,20 +27,26 @@ import net.minecraftforge.common.util.ITeleporter;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class EntityMinecartChestRNT extends EntityMinecartRNT {
 
-	private static final Tree[] woods = TFCRegistries.TREES.getValuesCollection().toArray(new Tree[] {});
+	protected static final List<Tree> woods = new ArrayList<>(TFCRegistries.TREES.getValuesCollection().size());
 
-	private final ChestMinecartHandler minecartContents = new ChestMinecartHandler();
+	static {
+		woods.addAll(TFCRegistries.TREES.getValuesCollection());
+	}
+
+	protected final ChestMinecartHandler minecartContents = new ChestMinecartHandler();
 	/**
 	 * When set to true, the minecart will drop all items when setDead() is called. When false (such as when travelling
 	 * dimensions) it preserves its contents.
 	 */
-	public boolean dropContentsWhenDead = true;
-	private ResourceLocation lootTable;
-	private long lootTableSeed;
-	private Tree wood;
+	protected boolean dropContentsWhenDead = true;
+	protected ResourceLocation lootTable;
+	protected long lootTableSeed;
+	protected Tree wood;
 
 	@SuppressWarnings("unused")
 	public EntityMinecartChestRNT(final World worldIn) {
@@ -106,7 +112,7 @@ public class EntityMinecartChestRNT extends EntityMinecartRNT {
 		super.readEntityFromNBT(compound);
 
 		// Store the wood type as a byte, there probably won't ever be more than 255 types of wood
-		wood = woods[compound.getByte("WoodType")];
+		wood = woods.get(compound.getByte("WoodType"));
 
 		if (compound.hasKey("LootTable")) {
 			lootTable = new ResourceLocation(compound.getString("LootTable"));
@@ -122,12 +128,7 @@ public class EntityMinecartChestRNT extends EntityMinecartRNT {
 		super.writeEntityToNBT(compound);
 
 		// Write our wood type to NBT as a byte
-		for (byte i = 0; i < woods.length; i++) {
-			if (wood == woods[i]) {
-				compound.setByte("WoodType", i);
-				break;
-			}
-		}
+		compound.setByte("WoodType", (byte) woods.indexOf(wood));
 
 		if (lootTable != null) {
 			compound.setString("LootTable", lootTable.toString());
@@ -145,18 +146,13 @@ public class EntityMinecartChestRNT extends EntityMinecartRNT {
 	public void writeSpawnData(final ByteBuf buffer) {
 		super.writeSpawnData(buffer);
 		// Store the wood type as a byte, there probably won't ever be more than 255 types of wood
-		for (byte i = 0; i < woods.length; i++) {
-			if (wood == woods[i]) {
-				buffer.writeByte(i);
-				return;
-			}
-		}
+		buffer.writeByte(woods.indexOf(wood));
 	}
 
 	@Override
 	public void readSpawnData(final ByteBuf additionalData) {
 		super.readSpawnData(additionalData);
-		wood = woods[additionalData.readByte()];
+		wood = woods.get(additionalData.readByte());
 	}
 
 	@Override
