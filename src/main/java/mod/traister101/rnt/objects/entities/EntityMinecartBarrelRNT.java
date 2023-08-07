@@ -6,7 +6,6 @@ import mod.traister101.rnt.GuiHandler.GuiType;
 import mod.traister101.rnt.objects.fluids.capability.BarrelMinecartFluidTank;
 import mod.traister101.rnt.objects.inventory.capability.BarrelMinecartHandler;
 import net.dries007.tfc.ConfigTFC;
-import net.dries007.tfc.ConfigTFC.Devices;
 import net.dries007.tfc.api.recipes.barrel.BarrelRecipe;
 import net.dries007.tfc.objects.blocks.BlocksTFC;
 import net.dries007.tfc.objects.blocks.wood.BlockBarrel;
@@ -35,6 +34,7 @@ import net.minecraftforge.fluids.*;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -206,6 +206,7 @@ public class EntityMinecartBarrelRNT extends EntityMinecartRNT {
 		super.writeSpawnData(buffer);
 		buffer.writeByte(barrels.indexOf(heldBarrel));
 		buffer.writeBoolean(sealed);
+		ByteBufUtils.writeTag(buffer, tank.writeToNBT(new NBTTagCompound()));
 	}
 
 	@Override
@@ -213,8 +214,9 @@ public class EntityMinecartBarrelRNT extends EntityMinecartRNT {
 		super.readSpawnData(additionalData);
 		heldBarrel = barrels.get(additionalData.readByte());
 		translationKey = heldBarrel.getTranslationKey();
-		blockState = heldBarrel.getDefaultState();
 		sealed = additionalData.readBoolean();
+		blockState = heldBarrel.getDefaultState().withProperty(BlockBarrel.SEALED, sealed);
+		tank.readFromNBT(ByteBufUtils.readTag(additionalData));
 	}
 
 	private void doSealedRecipe() {
@@ -251,14 +253,12 @@ public class EntityMinecartBarrelRNT extends EntityMinecartRNT {
 	}
 
 	public void onCalendarUpdate(long deltaPlayerTicks) {
-		if (recipe == null) return;
-
 		while (deltaPlayerTicks > 0) {
+			if (recipe == null) return;
 			deltaPlayerTicks = 0;
 
-			if (!sealed || 0 >= recipe.getDuration()) {
-				continue;
-			}
+			if (!sealed || recipe.getDuration() <= 0) continue;
+
 
 			final long tickFinish = sealedTick + recipe.getDuration();
 			if (tickFinish <= CalendarTFC.PLAYER_TIME.getTicks()) {
@@ -369,55 +369,41 @@ public class EntityMinecartBarrelRNT extends EntityMinecartRNT {
 	public boolean processInitialInteract(final EntityPlayer player, final EnumHand hand) {
 		if (super.processInitialInteract(player, hand)) return true;
 
+		final ItemStack heldStack = player.getHeldItem(EnumHand.MAIN_HAND);
+
 		if (player.isSneaking()) {
-			final ItemStack heldStack = player.getHeldItem(EnumHand.MAIN_HAND);
-
-			if (heldStack.isEmpty()) {
-				toggleSeal();
-				player.swingArm(EnumHand.MAIN_HAND);
-
-				return true;
-			}
-
-			// The held item doesn't have fluid capability
+			// The held item doesn't have fluid capability so we should toggle the seal
 			if (!heldStack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null)) {
-				if (!world.isRemote) GuiHandler.openGui(world, player, this, GuiType.BARREL_MINECART);
-				return true;
-			}
-
-			final IFluidHandlerItem handler = heldStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
-			// We checked if it has a handler already so this should never be null
-			assert handler != null;
-
-			FluidStack fluidStack = handler.drain(1000, false);
-
-			if (fluidStack == null) {
-				handler.fill(tank.getFluid(), true);
-				return true;
-
-//				if (!world.isRemote) GuiHandler.openGui(world, player, this, GuiType.BARREL_MINECART);
-//				return true;
-			}
-
-			final Fluid fluid = fluidStack.getFluid();
-			if (BARREL_MAX_FLUID_TEMPERATURE > fluid.getTemperature()) {
-				fluidStack = handler.drain(1000, true);
-				if (fluidStack != null) {
-					fluidStack.amount = Devices.BARREL.tank;
-				}
-
-				tank.fill(fluidStack, true);
+				toggleSeal();
+				world.playSound(null, posX, posY, posZ, SoundEvents.BLOCK_WOOD_PLACE, SoundCategory.BLOCKS, 1, 0.85F);
+				player.swingArm(EnumHand.MAIN_HAND);
 				return true;
 			}
 		}
 
-		if (!world.isRemote) GuiHandler.openGui(world, player, this, GuiType.BARREL_MINECART);
+		// Empty or our barrel is sealed we should just open GUI
+		if (heldStack.isEmpty() || sealed) {
+			GuiHandler.openGui(world, player, this, GuiType.BARREL_MINECART);
+			return true;
+		}
+
+		// If it doesn't have the fluid capability open GUI
+		if (!heldStack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null)) {
+			GuiHandler.openGui(world, player, this, GuiType.BARREL_MINECART);
+			return true;
+		}
+
+		final IFluidHandlerItem fluidHandler = heldStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
+		// We checked if it has a handler already so this should never be null
+		assert fluidHandler != null;
+
+		FluidUtil.interactWithFluidHandler(player, hand, tank);
+		markForSync();
 
 		return true;
 	}
 
 	public void toggleSeal() {
-		world.playSound(null, posX, posY, posZ, SoundEvents.BLOCK_WOOD_PLACE, SoundCategory.BLOCKS, 1, 0.85F);
 		if (sealed) onUnSealed();
 		else onSeal();
 	}
