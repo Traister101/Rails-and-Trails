@@ -8,7 +8,6 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
@@ -18,12 +17,10 @@ import static net.dries007.tfc.objects.te.TEBarrel.*;
 
 public class ContainerBarrelMinecart extends Container implements IButtonHandler {
 
-	private final IFluidHandler fluidTank;
 	private final EntityMinecartBarrelRNT barrelCart;
 
 	public ContainerBarrelMinecart(final InventoryPlayer playerInventory, final IItemHandler itemHandler,
-			final IFluidHandler fluidHandler, final EntityMinecartBarrelRNT barrelCart) {
-		this.fluidTank = fluidHandler;
+			final EntityMinecartBarrelRNT barrelCart) {
 		this.barrelCart = barrelCart;
 
 		addSlotToContainer(new SlotItemHandler(itemHandler, SLOT_FLUID_CONTAINER_IN, 35, 20));

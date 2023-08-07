@@ -31,7 +31,6 @@ public class BarrelMinecartFluidTank extends FluidTank {
 		this.barrelCart = barrelCart;
 	}
 
-
 	@Override
 	public boolean canFill() {
 		return barrelCart.isSealed();

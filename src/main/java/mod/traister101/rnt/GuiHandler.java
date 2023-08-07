@@ -54,7 +54,7 @@ public class GuiHandler implements IGuiHandler {
 
 				if (!(entity instanceof EntityMinecartBarrelRNT)) return null;
 
-				return new ContainerBarrelMinecart(player.inventory, itemHandler, fluidHandler, (EntityMinecartBarrelRNT) entity);
+				return new ContainerBarrelMinecart(player.inventory, itemHandler, (EntityMinecartBarrelRNT) entity);
 			}
 			default:
 				return null;

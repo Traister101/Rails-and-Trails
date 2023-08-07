@@ -107,21 +107,24 @@ public class GuiBarrelMinecart extends GuiContainer {
 			final IItemHandler handler = barrelCart.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
 			if (handler != null) {
 				GL11.glDisable(GL11.GL_DEPTH_TEST);
+
 				for (int slotId = 0; slotId < handler.getSlots(); slotId++) {
 					drawSlotOverlay(inventorySlots.getSlot(slotId));
 				}
+
 				GL11.glEnable(GL11.GL_DEPTH_TEST);
 			}
 
 			// Draw the text displaying both the seal date, and the recipe name
-			boolean isLong = false;
+			final boolean isLong;
 			final BarrelRecipe recipe = barrelCart.getRecipe();
 			if (recipe != null) {
 				final String resultName = recipe.getResultName();
 				final int recipeWidth = fontRenderer.getStringWidth(resultName);
-				if (recipeWidth > 80) isLong = true;
+				isLong = recipeWidth > 80;
 				fontRenderer.drawString(resultName, xSize / 2 - (isLong ? recipeWidth / 2 - 6 : 28), isLong ? 73 : 61, 0x404040);
-			}
+			} else isLong = false;
+
 			fontRenderer.drawString(barrelCart.getSealedDate(),
 					xSize / 2 - (isLong ? 28 : fontRenderer.getStringWidth(barrelCart.getSealedDate()) / 2),
 					isLong ? 19 : 73, 0x404040);
