@@ -33,6 +33,12 @@ minecraft {
     runDir = "run"
     mappings = "stable_39"
 
+    clientJvmArgs += "-Xmx4G"
+    clientJvmArgs += "-Xms4G"
+
+    clientRunArgs += ["--username", "RNT_Dev"]
+    clientJvmArgs += "-Dfml.doNotBackup=true"
+
     replace("@MODID@", config.mod.id)
     replace("@MODNAME@", config.mod.name)
     replace("@VERSION@", project.version)
