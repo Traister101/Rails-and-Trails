@@ -115,9 +115,8 @@ public class EntityMinecartBarrelRNT extends EntityMinecartRNT {
 		}
 
 		entityDropItem(itemStack, 0);
-		InventoryHelper.spawnItemStack(world, posX, posY, posZ, inventory.getStackInSlot(0));
-		InventoryHelper.spawnItemStack(world, posX, posY, posZ, inventory.getStackInSlot(1));
-		InventoryHelper.spawnItemStack(world, posX, posY, posZ, inventory.getStackInSlot(2));
+		for (final int slotIndex : new int[] {SLOT_FLUID_CONTAINER_IN, SLOT_FLUID_CONTAINER_OUT, SLOT_ITEM})
+			InventoryHelper.spawnItemStack(world, posX, posY, posZ, inventory.getStackInSlot(slotIndex));
 	}
 
 	@Override
@@ -434,7 +433,7 @@ public class EntityMinecartBarrelRNT extends EntityMinecartRNT {
 		blockState = blockState.withProperty(BlockBarrel.SEALED, true);
 
 		if (!world.isRemote) {
-			for (final int slotIndex : new int[] {0, 1}) {
+			for (final int slotIndex : new int[] {SLOT_FLUID_CONTAINER_IN, SLOT_FLUID_CONTAINER_OUT}) {
 				InventoryHelper.spawnItemStack(world, posX, posY, posZ, inventory.getStackInSlot(slotIndex));
 				inventory.setStackInSlot(slotIndex, ItemStack.EMPTY);
 			}
