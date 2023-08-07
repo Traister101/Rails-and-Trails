@@ -21,6 +21,7 @@ public final class EntitiesRNT {
 	public static void preInit() {
 		registerMinecart("steel_minecart", EntityMinecartRideableRNT.class);
 		registerMinecart("steel_minecart_chest", EntityMinecartChestRNT.class);
+		registerMinecart("steel_minecart_barrel", EntityMinecartBarrelRNT.class);
 	}
 
 	@SuppressWarnings("SameParameterValue")

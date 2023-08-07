@@ -1,15 +1,16 @@
 package mod.traister101.rnt.client;
 
 import mod.traister101.rnt.client.renderer.entity.RenderMinecartChestRNT;
+import mod.traister101.rnt.client.renderer.entity.RenderMinecartRNT;
 import mod.traister101.rnt.objects.blocks.BlockRailIntersection;
 import mod.traister101.rnt.objects.blocks.BlocksRNT;
 import mod.traister101.rnt.objects.blocks.RoadSlab;
+import mod.traister101.rnt.objects.entities.EntityMinecartBarrelRNT;
 import mod.traister101.rnt.objects.entities.EntityMinecartChestRNT;
 import mod.traister101.rnt.objects.entities.EntityMinecartRideableRNT;
 import mod.traister101.rnt.objects.items.ItemsRNT;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMap;
-import net.minecraft.client.renderer.entity.RenderMinecart;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraftforge.client.event.ModelRegistryEvent;
@@ -27,8 +28,10 @@ import static mod.traister101.rnt.RailsNTrails.MODID;
 public final class ClientRegistry {
 
 	public static void preInit() {
-		RenderingRegistry.registerEntityRenderingHandler(EntityMinecartRideableRNT.class, RenderMinecart<EntityMinecartRideableRNT>::new);
+		RenderingRegistry.registerEntityRenderingHandler(EntityMinecartRideableRNT.class,
+				RenderMinecartRNT<EntityMinecartRideableRNT>::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntityMinecartChestRNT.class, RenderMinecartChestRNT::new);
+		RenderingRegistry.registerEntityRenderingHandler(EntityMinecartBarrelRNT.class, RenderMinecartRNT<EntityMinecartBarrelRNT>::new);
 	}
 
 	@SubscribeEvent
