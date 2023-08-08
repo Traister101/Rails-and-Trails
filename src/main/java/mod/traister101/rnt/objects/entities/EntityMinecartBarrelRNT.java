@@ -197,19 +197,57 @@ public class EntityMinecartBarrelRNT extends EntityMinecartRNT {
 	protected void readEntityFromNBT(final NBTTagCompound compound) {
 		super.readEntityFromNBT(compound);
 		heldBarrel = (BlockBarrel) Block.getBlockFromName(compound.getString("HeldBarrel"));
+
+		// Handlers
 		inventory.deserializeNBT(compound.getCompoundTag("Container"));
 		tank.readFromNBT(compound.getCompoundTag("Tank"));
+
+		// Our sealed state, we also initialize our blockstate here
 		sealed = compound.getBoolean("Sealed");
-		blockState = heldBarrel.getDefaultState();
+		blockState = heldBarrel.getDefaultState().withProperty(BlockBarrel.SEALED, sealed);
+
+		// Tick stuff
+		sealedTick = compound.getLong("SealedTick");
+		sealedCalendarTick = compound.getLong("SealedCalendarTick");
+		lastPlayerTick = compound.getLong("lastPlayerTick");
+
+		recipe = BarrelRecipe.get(inventory.getStackInSlot(SLOT_ITEM), tank.getFluid());
+
+
+		if (!compound.hasKey("Surplus")) return;
+		final NBTTagList surplusItems = compound.getTagList("Surplus", NBT.TAG_COMPOUND);
+
+		surplus.clear();
+		for (int i = 0; i < surplusItems.tagCount(); ++i) {
+			surplus.add(new ItemStack(surplusItems.getCompoundTagAt(i)));
+		}
 	}
 
 	@Override
 	protected void writeEntityToNBT(final NBTTagCompound compound) {
 		super.writeEntityToNBT(compound);
 		compound.setString("HeldBarrel", Block.REGISTRY.getNameForObject(heldBarrel).toString());
+
+		// Handlers
 		compound.setTag("Container", inventory.serializeNBT());
 		compound.setTag("Tank", tank.writeToNBT(new NBTTagCompound()));
+
 		compound.setBoolean("Sealed", sealed);
+
+		// Tick stuff
+		compound.setLong("SealedTick", sealedTick);
+		compound.setLong("SealedCalendarTick", sealedCalendarTick);
+		compound.setLong("LastPlayerTick", lastPlayerTick);
+
+		// Can quit early here
+		if (surplus.isEmpty()) return;
+
+		final NBTTagList surplusList = new NBTTagList();
+		for (final ItemStack stack : surplus) {
+			surplusList.appendTag(stack.serializeNBT());
+		}
+
+		compound.setTag("Surplus", surplusList);
 	}
 
 	@Override
