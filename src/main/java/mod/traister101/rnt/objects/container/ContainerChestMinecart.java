@@ -22,15 +22,15 @@ public class ContainerChestMinecart extends Container {
 		}
 
 		// Adding player slots
-		for (int l = 0; l < 3; ++l) {
-			for (int j = 0; j < 9; ++j) {
-				addSlotToContainer(new Slot(playerInventory, j + l * 9 + 9, 8 + j * 18, 103 + l * 18 + i));
+		for (int j = 0; j < 3; ++j) {
+			for (int k = 0; k < 9; ++k) {
+				addSlotToContainer(new Slot(playerInventory, k + j * 9 + 9, 8 + k * 18, 103 + j * 18 + i));
 			}
 		}
 
 		// Adding hot bar slots
-		for (int i1 = 0; i1 < 9; ++i1) {
-			addSlotToContainer(new Slot(playerInventory, i1, 8 + i1 * 18, 161 + i));
+		for (int j = 0; j < 9; ++j) {
+			addSlotToContainer(new Slot(playerInventory, j, 8 + j * 18, 161 + i));
 		}
 	}
 
@@ -55,6 +55,7 @@ public class ContainerChestMinecart extends Container {
 				slot.onSlotChanged();
 			}
 		}
+
 		return ItemStack.EMPTY;
 	}
 

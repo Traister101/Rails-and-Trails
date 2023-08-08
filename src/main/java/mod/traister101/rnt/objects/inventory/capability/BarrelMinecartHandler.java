@@ -25,6 +25,9 @@ public class BarrelMinecartHandler extends ItemStackHandler {
 	@Nonnull
 	@Override
 	public ItemStack insertItem(final int slot, @Nonnull final ItemStack stack, final boolean simulate) {
+		// Can't insert anything if our cart is sealed
+		if ((barrelCart.isSealed())) return ItemStack.EMPTY;
+
 		return super.insertItem(slot, stack, simulate);
 	}
 

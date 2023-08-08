@@ -61,6 +61,7 @@ public class ContainerBarrelMinecart extends Container implements IButtonHandler
 				slot.onSlotChanged();
 			}
 		}
+
 		return ItemStack.EMPTY;
 	}
 
