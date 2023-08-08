@@ -3,6 +3,8 @@ package mod.traister101.rnt.objects.entities;
 import io.netty.buffer.ByteBuf;
 import mod.traister101.rnt.GuiHandler;
 import mod.traister101.rnt.GuiHandler.GuiType;
+import mod.traister101.rnt.RailsNTrails;
+import mod.traister101.rnt.network.UpdateMinecartBarrel;
 import mod.traister101.rnt.objects.fluids.capability.BarrelMinecartFluidTank;
 import mod.traister101.rnt.objects.inventory.capability.BarrelMinecartHandler;
 import net.dries007.tfc.ConfigTFC;
@@ -131,7 +133,7 @@ public class EntityMinecartBarrelRNT extends EntityMinecartRNT {
 
 		if (needsClientUpdate) {
 			needsClientUpdate = false;
-			// TODO send update packet
+			RailsNTrails.getNetwork().sendToAllTracking(new UpdateMinecartBarrel(this), this);
 		}
 
 		final BlockPos blockPos = new BlockPos(posX, posY, posZ);
@@ -157,6 +159,7 @@ public class EntityMinecartBarrelRNT extends EntityMinecartRNT {
 
 			if (!sealed && world.isRainingAt(blockPos.up()) && (tank.getFluid() == null || tank.getFluid().getFluid() == freshWater)) {
 				tank.fill(new FluidStack(freshWater, 10), true);
+				markForSync();
 			}
 
 			if (inventory.getStackInSlot(SLOT_ITEM) == ItemStack.EMPTY && !surplus.isEmpty()) {
@@ -483,12 +486,31 @@ public class EntityMinecartBarrelRNT extends EntityMinecartRNT {
 		return recipe;
 	}
 
-	public IFluidHandler getBarrelTank() {
+	public FluidTank getBarrelTank() {
 		return tank;
 	}
 
 	@SideOnly(Side.CLIENT)
 	public String getBarrelTranslationKey() {
 		return heldBarrel.getTranslationKey() + ".name";
+	}
+
+	/**
+	 * @return The item that shows up in world
+	 */
+	public ItemStack getShownItem() {
+		return inventory.getStackInSlot(SLOT_ITEM);
+	}
+
+	/**
+	 * Sets the inventory contents of the item slot that shows up in world
+	 * This should only be called on the client through the syncing packet sent
+	 * by the server
+	 *
+	 * @param itemStack The item stack that is rendered in world
+	 */
+	@SideOnly(Side.CLIENT)
+	public void setShownItem(final ItemStack itemStack) {
+		inventory.setStackInSlot(SLOT_ITEM, itemStack);
 	}
 }
